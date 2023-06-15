@@ -2,7 +2,9 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from dotenv import load_dotenv
 
+load_dotenv('../.env')
 
 def main():
     """Run administrative tasks."""
@@ -16,6 +18,14 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
+    env_state = os.getenv('ENV_STATE','local')
+    if env_state =='production':
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.production')
+    elif env_state =='staging':
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.staging')
+    else:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')
+
 
 
 if __name__ == '__main__':
