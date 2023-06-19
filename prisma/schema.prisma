@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserType {
+  GUEST
+  RELATIVES
+  STAFF
+}
+
+enum ReservationStatus {
+  RESERVED
+  CANCELED
+  PAID
+  PAID_CANCEL_FEE
+}
+
+model User {
+  id               Int           @id @default(autoincrement()) @db.UnsignedInt
+  publicId         String        @unique @default(uuid()) @db.Char(36)
+  firstName        String        @db.Char(36)
+  lastName         String        @db.Char(36)
+  email            String        @unique @db.VarChar(255)
+  phoneNumber      String        @db.Char(36)
+  type             UserType      @default(GUEST)
+  createdAt        DateTime      @default(now()) @db.DateTime(3)
+  updatedAt        DateTime      @default(now()) @updatedAt @db.DateTime(3)
+  userReservations Reservation[] @relation("UserReservations")
+}
+
+model Studio {
+  id                 Int           @id @default(autoincrement()) @db.UnsignedInt
+  publicId           String        @unique @default(uuid()) @db.Char(36)
+  name               String        @db.Char(36)
+  status             Int           @db.TinyInt
+  studioReservations Reservation[] @relation("StudioReservations")
+  studioPlans        Plan[]        @relation("StudioPlans")
+}
+
+model Plan {
+  id           Int           @id @default(autoincrement()) @db.UnsignedInt
+  publicId     String        @unique @default(uuid()) @db.Char(36)
+  name         String        @db.Char(70)
+  nameJa       String        @db.Char(70)
+  price        Decimal       @db.Decimal(10, 2)
+  studio       Studio        @relation("StudioPlans", fields: [studioId], references: [id])
+  studioId     Int           @db.UnsignedInt
+  reservations Reservation[] @relation("PlansReservations")
+}
+
+model Reservation {
+  id        Int               @id @default(autoincrement()) @db.UnsignedInt
+  publicId  String            @unique @default(uuid()) @db.Char(36)
+  plan      Plan              @relation("PlansReservations", fields: [planId], references: [id])
+  planId    Int
+  dateIn    DateTime          @default(now())
+  dateEnd   DateTime
+  status    ReservationStatus @default(RESERVED)
+  studio    Studio            @relation("StudioReservations", fields: [studioId], references: [id])
+  studioId  Int               @db.UnsignedInt
+  user      User              @relation("UserReservations", fields: [userId], references: [id])
+  userId    Int               @db.UnsignedInt
+  createdAt DateTime          @default(now()) @db.DateTime(3)
+  updatedAt DateTime          @default(now()) @updatedAt @db.DateTime(3)
+  createdBy String?
+  updatedBy String?
+}
