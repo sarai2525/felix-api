@@ -23,6 +23,10 @@ pnpm install
 ### 4. Start coding
 
 ```.sh
+
+# Insert the data that existing data and plan.
+pnpm prisma:prepare
+
 pnpm dev
 ```
 
