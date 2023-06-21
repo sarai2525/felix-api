@@ -61,8 +61,8 @@ model Reservation {
   publicId  String            @unique @default(uuid()) @db.Char(36)
   plan      Plan              @relation(fields: [planId], references: [id])
   planId    Int               @db.UnsignedInt
-  dateIn    DateTime          @default(now()) @db.DateTime(3)
-  dateEnd   DateTime
+  dateIn    DateTime          @db.DateTime(3)
+  dateEnd   DateTime          @db.DateTime(3)
   status    ReservationStatus @default(RESERVED)
   studio    Studio            @relation(fields: [studioId], references: [id])
   studioId  Int               @db.UnsignedInt
