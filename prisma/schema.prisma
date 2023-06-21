@@ -59,8 +59,8 @@ model Plan {
   studio       Studio        @relation(fields: [studioId], references: [id])
   studioId     Int           @db.UnsignedInt
   reservations Reservation[]
-  dateIn       DateTime?     @db.DateTime()
-  dateEnd      DateTime?     @db.DateTime()
+  dateIn       String?
+  dateEnd      String?
 }
 
 model Reservation {

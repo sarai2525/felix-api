@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `Plan` MODIFY `dateEnd` VARCHAR(191) NULL,
+    MODIFY `dateIn` VARCHAR(191) NULL;
