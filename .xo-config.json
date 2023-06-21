@@ -1,4 +1,11 @@
 {
 	"space": true,
-  "nodeVersion": true
+  "nodeVersion": true,
+  "rules": {
+    "unicorn/no-array-for-each": "off",
+    "import/extensions": "off",
+    "@typescript-eslint/object-curly-spacing": "off",
+    "object-curly-spacing": ["error", "always"],
+    "quotes": ["error"]
+  }
 }
