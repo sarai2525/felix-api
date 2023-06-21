@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `Plan` ADD COLUMN `dateEnd` DATETIME NULL,
+    ADD COLUMN `dateIn` DATETIME NULL;
