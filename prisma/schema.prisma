@@ -30,7 +30,7 @@ enum studioStatus {
 
 model User {
   id          Int           @id @default(autoincrement()) @db.UnsignedInt
-  publicId    String        @unique @default(uuid()) @db.Char(36)
+  publicId    String        @unique @default(cuid()) @db.Char(36)
   firstName   String        @db.VarChar(36)
   lastName    String        @db.VarChar(36)
   email       String        @unique @db.VarChar(255)
@@ -43,7 +43,7 @@ model User {
 
 model Studio {
   id           Int           @id @default(autoincrement()) @db.UnsignedInt
-  publicId     String        @unique @default(uuid()) @db.Char(36)
+  publicId     String        @unique @default(cuid()) @db.Char(36)
   name         String        @db.VarChar(36)
   status       studioStatus
   reservations Reservation[]
@@ -52,7 +52,7 @@ model Studio {
 
 model Plan {
   id           Int           @id @default(autoincrement()) @db.UnsignedInt
-  publicId     String        @unique @default(uuid()) @db.Char(36)
+  publicId     String        @unique @default(cuid()) @db.Char(36)
   name         String        @db.VarChar(70)
   nameJa       String        @db.VarChar(70)
   price        Decimal       @db.Decimal(10, 2)
@@ -65,7 +65,7 @@ model Plan {
 
 model Reservation {
   id        Int               @id @default(autoincrement()) @db.UnsignedInt
-  publicId  String            @unique @default(uuid()) @db.Char(36)
+  publicId  String            @unique @default(cuid()) @db.Char(36)
   plan      Plan              @relation(fields: [planId], references: [id])
   planId    Int               @db.UnsignedInt
   dateIn    DateTime          @db.DateTime(3)
