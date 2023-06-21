@@ -9,8 +9,8 @@
     "prepare": "husky install",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "prisma db seed --preview-feature",
-    "prisma:dev": "pnpm prisma:generate && pnpm prisma:migrate && pnpm prisma:seed",
+    "prisma:seed": "tsx ./prisma/seed/index.ts",
+    "prisma:prepare": "pnpm prisma:generate && pnpm prisma:migrate && pnpm prisma:seed",
     "prisma:studio": "prisma studio"
   },
   "keywords": [],
