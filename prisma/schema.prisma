@@ -23,6 +23,11 @@ enum ReservationStatus {
   PAID_CANCEL_FEE
 }
 
+enum studioStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
 model User {
   id          Int           @id @default(autoincrement()) @db.UnsignedInt
   publicId    String        @unique @default(uuid()) @db.Char(36)
@@ -40,7 +45,7 @@ model Studio {
   id           Int           @id @default(autoincrement()) @db.UnsignedInt
   publicId     String        @unique @default(uuid()) @db.Char(36)
   name         String        @db.VarChar(36)
-  status       Int           @db.TinyInt
+  status       studioStatus
   reservations Reservation[]
   plans        Plan[]
 }
