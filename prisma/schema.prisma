@@ -24,49 +24,49 @@ enum ReservationStatus {
 }
 
 model User {
-  id               Int           @id @default(autoincrement()) @db.UnsignedInt
-  publicId         String        @unique @default(uuid()) @db.Char(36)
-  firstName        String        @db.Char(36)
-  lastName         String        @db.Char(36)
-  email            String        @unique @db.VarChar(255)
-  phoneNumber      String        @db.Char(36)
-  type             UserType      @default(GUEST)
-  createdAt        DateTime      @default(now()) @db.DateTime(3)
-  updatedAt        DateTime      @default(now()) @updatedAt @db.DateTime(3)
-  userReservations Reservation[] @relation("UserReservations")
+  id          Int           @id @default(autoincrement()) @db.UnsignedInt
+  publicId    String        @unique @default(uuid()) @db.Char(36)
+  firstName   String        @db.VarChar(36)
+  lastName    String        @db.VarChar(36)
+  email       String        @unique @db.VarChar(255)
+  phoneNumber String        @db.VarChar(36)
+  type        UserType      @default(GUEST)
+  createdAt   DateTime      @default(now()) @db.DateTime(3)
+  updatedAt   DateTime      @default(now()) @updatedAt @db.DateTime(3)
+  reservation Reservation[]
 }
 
 model Studio {
-  id                 Int           @id @default(autoincrement()) @db.UnsignedInt
-  publicId           String        @unique @default(uuid()) @db.Char(36)
-  name               String        @db.Char(36)
-  status             Int           @db.TinyInt
-  studioReservations Reservation[] @relation("StudioReservations")
-  studioPlans        Plan[]        @relation("StudioPlans")
+  id           Int           @id @default(autoincrement()) @db.UnsignedInt
+  publicId     String        @unique @default(uuid()) @db.Char(36)
+  name         String        @db.VarChar(36)
+  status       Int           @db.TinyInt
+  reservations Reservation[]
+  plans        Plan[]
 }
 
 model Plan {
   id           Int           @id @default(autoincrement()) @db.UnsignedInt
   publicId     String        @unique @default(uuid()) @db.Char(36)
-  name         String        @db.Char(70)
-  nameJa       String        @db.Char(70)
+  name         String        @db.VarChar(70)
+  nameJa       String        @db.VarChar(70)
   price        Decimal       @db.Decimal(10, 2)
-  studio       Studio        @relation("StudioPlans", fields: [studioId], references: [id])
+  studio       Studio        @relation(fields: [studioId], references: [id])
   studioId     Int           @db.UnsignedInt
-  reservations Reservation[] @relation("PlansReservations")
+  reservations Reservation[]
 }
 
 model Reservation {
   id        Int               @id @default(autoincrement()) @db.UnsignedInt
   publicId  String            @unique @default(uuid()) @db.Char(36)
-  plan      Plan              @relation("PlansReservations", fields: [planId], references: [id])
-  planId    Int
-  dateIn    DateTime          @default(now())
+  plan      Plan              @relation(fields: [planId], references: [id])
+  planId    Int               @db.UnsignedInt
+  dateIn    DateTime          @default(now()) @db.DateTime(3)
   dateEnd   DateTime
   status    ReservationStatus @default(RESERVED)
-  studio    Studio            @relation("StudioReservations", fields: [studioId], references: [id])
+  studio    Studio            @relation(fields: [studioId], references: [id])
   studioId  Int               @db.UnsignedInt
-  user      User              @relation("UserReservations", fields: [userId], references: [id])
+  user      User              @relation(fields: [userId], references: [id])
   userId    Int               @db.UnsignedInt
   createdAt DateTime          @default(now()) @db.DateTime(3)
   updatedAt DateTime          @default(now()) @updatedAt @db.DateTime(3)
