@@ -14,6 +14,7 @@ enum UserType {
   GUEST
   RELATIVES
   STAFF
+  ADMIN
 }
 
 enum ReservationStatus {
@@ -42,12 +43,11 @@ model User {
 }
 
 model Studio {
-  id           Int           @id @default(autoincrement()) @db.UnsignedInt
-  publicId     String        @unique @default(cuid()) @db.Char(25)
-  name         String        @db.VarChar(36)
-  status       studioStatus
-  reservations Reservation[]
-  plans        Plan[]
+  id       Int          @id @default(autoincrement()) @db.UnsignedInt
+  publicId String       @unique @default(cuid()) @db.Char(25)
+  name     String       @db.VarChar(36)
+  status   studioStatus
+  plans    Plan[]
 }
 
 model Plan {
@@ -71,8 +71,6 @@ model Reservation {
   dateIn    DateTime          @db.DateTime(3)
   dateEnd   DateTime          @db.DateTime(3)
   status    ReservationStatus @default(RESERVED)
-  studio    Studio            @relation(fields: [studioId], references: [id])
-  studioId  Int               @db.UnsignedInt
   user      User              @relation(fields: [userId], references: [id])
   userId    Int               @db.UnsignedInt
   createdAt DateTime          @default(now()) @db.DateTime(3)
