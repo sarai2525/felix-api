@@ -10,9 +10,6 @@ const records = [
     plans: {
       create: [],
     },
-    reservations: {
-      create: [],
-    },
   },
   {
     id: 2,
@@ -21,15 +18,12 @@ const records = [
     plans: {
       create: [],
     },
-    reservations: {
-      create: [],
-    },
   },
 ];
 
 export const studio = async () => {
   records.forEach(async record => {
-    const { id, name, plans, reservations } = record;
+    const { id, name, plans } = record;
     await prisma.studio.upsert({
       where: {
         id,
@@ -39,14 +33,12 @@ export const studio = async () => {
         name,
         status: 'AVAILABLE',
         plans,
-        reservations,
       },
       update: {
         id,
         name,
         status: 'AVAILABLE',
         plans,
-        reservations,
       },
     });
   });
