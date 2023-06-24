@@ -20,7 +20,8 @@
           "camelCase": true
         }
       }
-    ]
+    ],
+    "@typescript-eslint/quotes": 0
   },
   "project": "./tsconfig.json"
 }
