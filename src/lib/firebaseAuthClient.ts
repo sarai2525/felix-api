@@ -14,6 +14,15 @@ export type SignInUser = {
   displayName: string;
 };
 
+export type SignUpUser = {
+  kind: string;
+  idToken: string;
+  email: string;
+  refreshToken: string;
+  expiresIn: string;
+  localId: string;
+};
+
 class FirebaseAuthClient {
   private readonly client: typeof ky;
   constructor() {
@@ -75,7 +84,7 @@ class FirebaseAuthClient {
   }
 
   public async postSignUp({
-    email = 'dummy@newell-productions.com',
+    email = 'dummy3@newell-productions.com',
     password = 'tomato1234',
   }: Record<string, string>) {
     if (!process.env.FIREBASE_API_KEY) {
@@ -92,7 +101,7 @@ class FirebaseAuthClient {
         },
       },
     );
-    const user: SignInUser = await response.json();
+    const user: SignUpUser = await response.json();
     return user;
   }
 }

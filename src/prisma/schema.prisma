@@ -35,7 +35,7 @@ model User {
   firstName   String        @db.VarChar(36)
   lastName    String        @db.VarChar(36)
   email       String        @unique @db.VarChar(255)
-  phoneNumber String        @db.VarChar(36)
+  phoneNumber String?       @db.VarChar(36)
   type        UserType      @default(GUEST)
   createdAt   DateTime      @default(now()) @db.DateTime(3)
   updatedAt   DateTime      @default(now()) @updatedAt @db.DateTime(3)
