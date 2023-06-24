@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "esnext",
+    "module": "ESNext",
     "noImplicitAny": false,
     "noUnusedLocals": false,
     "removeComments": true,
@@ -13,7 +13,17 @@
     "baseUrl": "./src",
     "strictNullChecks": true,
     "esModuleInterop": true,
-    "moduleResolution": "node"
+    "moduleResolution": "Node",
+    "paths": {
+      "@/*": [
+        "*"
+      ]
+    },
+    "typeRoots" : ["./src/types", "./node_modules/@types", "firebase-admin"],
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "rootDir": "./",
+  "exclude": ["node_modules", "**/*.spec.ts"],
+  "include": ["src"]
 }
