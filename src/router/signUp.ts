@@ -1,9 +1,4 @@
-import {
-  type Request,
-  type Response,
-  type NextFunction,
-  response,
-} from 'express';
+import { type Request, type Response, type NextFunction } from 'express';
 import signUp from '@/service/signUp';
 
 export default [
