@@ -73,5 +73,27 @@ class FirebaseAuthClient {
     const user: SignInUser = await response.json();
     return user;
   }
+
+  public async postSignUp({
+    email = 'dummy@newell-productions.com',
+    password = 'tomato1234',
+  }: Record<string, string>) {
+    if (!process.env.FIREBASE_API_KEY) {
+      throw new Error('FIREBASE_API_KEY is not defined');
+    }
+
+    const response = await this.client.post(
+      `accounts:signUp?key=${process.env.FIREBASE_API_KEY}`,
+      {
+        json: {
+          email,
+          password,
+          returnSecureToken: true,
+        },
+      },
+    );
+    const user: SignInUser = await response.json();
+    return user;
+  }
 }
 export default new FirebaseAuthClient();
