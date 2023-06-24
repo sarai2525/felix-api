@@ -223,16 +223,31 @@ const records = [
 
 export const plan = async () => {
   records.forEach(async record => {
-    const { id, name, nameJa, price, studioId, reservations, dateIn, dateEnd } = record;
+    const { id, name, nameJa, price, studioId, reservations, dateIn, dateEnd }
+      = record;
     await prisma.plan.upsert({
       where: {
         id,
       },
       create: {
-        id, name, nameJa, price, studioId, reservations, dateIn, dateEnd,
+        id,
+        name,
+        nameJa,
+        price,
+        studioId,
+        reservations,
+        dateIn,
+        dateEnd,
       },
       update: {
-        id, name, nameJa, price, studioId, reservations, dateIn, dateEnd,
+        id,
+        name,
+        nameJa,
+        price,
+        studioId,
+        reservations,
+        dateIn,
+        dateEnd,
       },
     });
   });

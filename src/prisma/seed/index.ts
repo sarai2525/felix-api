@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { consola } from 'consola';
-import { studio } from './studio';
-import { plan } from './plan';
+import { plan } from '@/prisma/seed/plan';
+import { studio } from '@/prisma/seed/studio';
 
 const prisma = new PrismaClient();
 
