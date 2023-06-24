@@ -8,6 +8,19 @@
     "object-curly-spacing": ["error", "always"],
     "quotes": ["error"],
     "n/file-extension-in-import": "off",
-    "n/prefer-global/process": 0
-  }
+    "n/prefer-global/process": 0,
+    "new-cap": 0,
+    "no-warning-comments": 0,
+    "import/no-anonymous-default-export": 0,
+    "no-dupe-args": 0,
+    "unicorn/filename-case": [
+      "error",
+      {
+        "cases": {
+          "camelCase": true
+        }
+      }
+    ]
+  },
+  "project": "./tsconfig.json"
 }
