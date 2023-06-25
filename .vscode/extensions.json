@@ -1,6 +1,5 @@
 {
   "recommendations": [
-    "samverschueren.linter-xo",
     "wmaurer.change-case",
     "chakrounanas.turbo-console-log",
     "rangav.vscode-thunder-client",
