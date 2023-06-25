@@ -42,24 +42,24 @@ class FirebaseAuthClient {
         ],
         afterResponse: [
           (response) => {
-            if (response.ok) {
-              const {
-                requestUrl: { pathname }
-              } = response;
+            if (!response.ok) {
+              const { body } = response;
+              const { error } = JSON.parse(body as string);
               const message = JSON.stringify({
-                event: `Succeed to request to Firebase Auth ${pathname}`
+                event: 'Failed to request to Firebase Auth',
+                statusCode: error.code,
+                statusMessage: error.message
               });
-              consola.success(message);
-              return response;
+              consola.error(message);
             }
-            const { body } = response;
-            const { error } = JSON.parse(body.toString());
+            const {
+              requestUrl: { pathname }
+            } = response;
             const message = JSON.stringify({
-              event: 'Failed to request to Firebase Auth',
-              statusCode: error.code,
-              statusMessage: error.message
+              event: `Succeed to request to Firebase Auth ${pathname}`
             });
-            consola.error(message);
+            consola.success(message);
+            return response;
           }
         ]
       }
