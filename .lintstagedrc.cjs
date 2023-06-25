@@ -7,7 +7,7 @@ const buildCommand = (filenames) => {
 
   return [
     `prettier --write ${files}`,
-    `xo --fix ${files}`,
+    `eslint --fix ${files}`,
     //TODO: Reconsider to testing each files on git staged `vitest run related ${files}`
   ];
 }

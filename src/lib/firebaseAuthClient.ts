@@ -1,9 +1,11 @@
-import ky from 'ky';
+import got from 'got';
 import consola from 'consola';
-// eslint-disable-next-line import/no-unassigned-import
-import 'dotenv/config';
+import 'dotenv/config.js';
 
-export type SignInUser = {
+const FIREBASE_API_URL: string | undefined = process.env.FIREBASE_API_BASE_URL;
+const FIREBASE_API_KEY: string | undefined = process.env.FIREBASE_API_KEY;
+
+export interface SignInUser {
   idToken: string;
   email: string;
   refreshToken: string;
@@ -12,97 +14,86 @@ export type SignInUser = {
   registered: boolean;
   kind: string;
   displayName: string;
-};
+}
 
-export type SignUpUser = {
+export interface SignUpUser {
   kind: string;
   idToken: string;
   email: string;
   refreshToken: string;
   expiresIn: string;
   localId: string;
-};
+}
 
 class FirebaseAuthClient {
-  private readonly client: typeof ky;
+  private readonly client: typeof got;
   constructor() {
-    this.client = ky.create({
-      prefixUrl: process.env.FIREBASE_API_BASE_URL,
+    this.client = got.extend({
+      prefixUrl: FIREBASE_API_URL,
       hooks: {
         beforeRequest: [
-          (request: Request) => {
-            consola.info(`[Request to Firebase Auth]: ${request.url}`);
-          },
+          (options) => {
+            if (FIREBASE_API_KEY === undefined) {
+              throw new Error('FIRE_BASE_API_KEY is undefined');
+            }
+            const { method } = options;
+            consola.info(`[${method}] Request to Firebase Auth`);
+          }
         ],
         afterResponse: [
-          async (_request: Request, _options, response: Response) => {
-            if (response.ok) {
-              const { status, statusText } = response;
-              const message = JSON.stringify({
-                event: 'Succeed to request to Firebase Auth',
-                status,
-                statusText,
-              });
-              consola.success(message);
-              return response;
-            }
-
-            const { status, statusText } = response;
-            const message = JSON.stringify({
-              event: 'Failed to request to Firebase Auth',
-              status,
-              statusText,
-            });
-            consola.error(message);
-          },
-        ],
-      },
+          // TODO: Fix ts2322
+          // (response)=> {
+          //   if (response!.ok) {
+          //     const {requestUrl: {
+          //       pathname,
+          //     }} = response;
+          //     const message = JSON.stringify({
+          //       event: `Succeed to request to Firebase Auth ${pathname}`,
+          //     });
+          //     consola.success(message);
+          //     return response;
+          //   }
+          //   const { statusCode } = response;
+          //   const message = JSON.stringify({
+          //     event: 'Failed to request to Firebase Auth',
+          //     statusCode,
+          //   });
+          //   consola.error(message);
+          // },
+        ]
+      }
     });
   }
 
   // Document: https://firebase.google.com/docs/reference/rest/auth#section-create-email-password
   public async postSignIn({
     email = 's.arai@newell-productions.com',
-    password = 'tomato1234',
-  }: Record<string, string>) {
-    if (!process.env.FIREBASE_API_KEY) {
-      throw new Error('FIREBASE_API_KEY is not defined');
-    }
-
-    const response = await this.client.post(
-      `accounts:signInWithPassword?key=${process.env.FIREBASE_API_KEY}`,
-      {
-        json: {
-          email,
-          password,
-          returnSecureToken: true,
-        },
-      },
-    );
-    const user: SignInUser = await response.json();
-    return user;
+    password = 'tomato1234'
+  }: Record<string, string>): Promise<SignInUser> {
+    const response: SignInUser = await this.client(`accounts:signInWithPassword?key=${FIREBASE_API_KEY?.toString()}`, {
+      method: 'POST',
+      json: {
+        email,
+        password,
+        returnSecureToken: true
+      }
+    }).json();
+    return response;
   }
 
   public async postSignUp({
     email = 'dummy3@newell-productions.com',
-    password = 'tomato1234',
-  }: Record<string, string>) {
-    if (!process.env.FIREBASE_API_KEY) {
-      throw new Error('FIREBASE_API_KEY is not defined');
-    }
-
-    const response = await this.client.post(
-      `accounts:signUp?key=${process.env.FIREBASE_API_KEY}`,
-      {
-        json: {
-          email,
-          password,
-          returnSecureToken: true,
-        },
-      },
-    );
-    const user: SignUpUser = await response.json();
-    return user;
+    password = 'tomato1234'
+  }: Record<string, string>): Promise<SignUpUser> {
+    const response: SignUpUser = await this.client(`accounts:signUp?key=${FIREBASE_API_KEY?.toString()}`, {
+      method: 'POST',
+      json: {
+        email,
+        password,
+        returnSecureToken: true
+      }
+    }).json();
+    return response;
   }
 }
 export default new FirebaseAuthClient();

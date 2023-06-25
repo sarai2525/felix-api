@@ -1,0 +1,20 @@
+{
+    "root": true,
+    "env": {
+        "browser": false,
+        "es2021": true
+    },
+    "plugins": ["@typescript-eslint"],
+    "extends": ["standard-with-typescript", "prettier"],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "project": "./tsconfig.json"
+    },
+    "rules": {
+        "@typescript-eslint/object-curly-spacing": "off",
+        "import/extensions": ["error", "always", { "ignorePackages": true }],
+        "@typescript-eslint/restrict-template-expressions": "off"
+    }
+}
