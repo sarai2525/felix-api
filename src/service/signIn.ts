@@ -47,9 +47,11 @@ async function updateLastLogin({ publicId }): Promise<void> {
         lastLogin: dayjs().toISOString()
       }
     });
+    consola.info(`User ${publicId} logged in`);
   } catch (error) {
     consola.error(error);
   } finally {
     await prisma.$disconnect();
+    consola.info('Prisma client disconnected');
   }
 }

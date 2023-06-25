@@ -17,8 +17,9 @@ export default async function signUp({ email, password }: Record<string, string>
     email: emailAddress,
     refreshToken
   } = await FirebaseAuthClient.postSignUp({ email, password });
-  await setCustomRole(publicId, USER_ROLE.STAFF);
-  await createUser({ publicId, emailAddress });
+  const role = USER_ROLE.STAFF;
+  await setCustomRole(publicId, role);
+  await createUser({ publicId, emailAddress, role });
   return {
     publicId,
     refreshToken,
@@ -32,7 +33,7 @@ async function setCustomRole(publicId, role): Promise<void> {
   });
 }
 
-async function createUser({ publicId, emailAddress }): Promise<void> {
+async function createUser({ publicId, emailAddress, role }): Promise<void> {
   const prisma = new PrismaClient();
   try {
     await prisma.user.create({
@@ -42,12 +43,14 @@ async function createUser({ publicId, emailAddress }): Promise<void> {
         firstName: '',
         lastName: '',
         phoneNumber: '',
-        role: USER_ROLE.STAFF // TODO: be changeable
+        role
       }
     });
+    consola.success(`User ${emailAddress} created`);
   } catch (error) {
     consola.error(error);
   } finally {
     await prisma.$disconnect();
+    consola.info('Prisma client disconnected');
   }
 }
