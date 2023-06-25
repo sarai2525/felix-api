@@ -89,5 +89,17 @@ class FirebaseAuthClient {
     }).json();
     return response;
   }
+
+  public async sendConfirmationEmail({ idToken }): Promise<string> {
+    const response: string = await this.client(`accounts:sendOobCode?key=${FIREBASE_API_KEY}`, {
+      method: 'POST',
+      json: {
+        requestType: 'VERIFY_EMAIL',
+        idToken
+      }
+    }).json();
+    return response;
+  }
 }
+
 export default new FirebaseAuthClient();

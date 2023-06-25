@@ -7,23 +7,20 @@ import FirebaseAuthClient from '../lib/firebaseAuthClient.js';
 
 interface User {
   publicId: string;
-  refreshToken: string;
   email: string;
+  idToken: string;
 }
 
 export default async function signUp({ email, password }: Record<string, string>): Promise<User> {
-  const {
-    localId: publicId,
-    email: emailAddress,
-    refreshToken
-  } = await FirebaseAuthClient.postSignUp({ email, password });
+  const { localId: publicId, email: emailAddress, idToken } = await FirebaseAuthClient.postSignUp({ email, password });
   const role = USER_ROLE.STAFF;
   await setCustomRole(publicId, role);
   await createUser({ publicId, emailAddress, role });
+  await sendConfirmationEmail(idToken);
   return {
     publicId,
-    refreshToken,
-    email: emailAddress
+    email: emailAddress,
+    idToken
   };
 }
 
@@ -53,4 +50,9 @@ async function createUser({ publicId, emailAddress, role }): Promise<void> {
     await prisma.$disconnect();
     consola.info('Prisma client disconnected');
   }
+}
+
+async function sendConfirmationEmail(idToken): Promise<string> {
+  const email = await FirebaseAuthClient.sendConfirmationEmail({ idToken });
+  return email;
 }
