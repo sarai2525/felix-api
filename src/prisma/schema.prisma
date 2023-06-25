@@ -40,6 +40,7 @@ model User {
   createdAt   DateTime      @default(now()) @db.DateTime(3)
   updatedAt   DateTime      @default(now()) @updatedAt @db.DateTime(3)
   reservation Reservation[]
+  lastLogin   DateTime?
 }
 
 model Studio {
