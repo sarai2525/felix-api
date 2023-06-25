@@ -1,6 +1,5 @@
-import { cert, getApp, getApps, initializeApp, type App } from 'firebase-admin/app';
-// eslint-disable-next-line import/no-unassigned-import
 import 'dotenv/config';
+import { cert, getApp, getApps, initializeApp } from 'firebase-admin/app';
 
 const firebaseCert = {
   projectId: process.env.FIREBASE_PROJECT_ID,
@@ -8,7 +7,7 @@ const firebaseCert = {
   privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n') // Ref: https://stackoverflow.com/questions/50299329/node-js-firebase-service-account-private-key-wont-parse
 };
 
-const firebaseAdmin: App =
+const firebaseAdmin =
   getApps().length === 0
     ? initializeApp({
         credential: cert(firebaseCert)
