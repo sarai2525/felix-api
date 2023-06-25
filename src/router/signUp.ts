@@ -3,7 +3,7 @@ import signUp from '../service/signUp.js';
 
 export default [
   async (request: Request, response: Response, next: NextFunction) => {
-    const { email, password } = request;
+    const { email, password } = request.body;
     try {
       const data = await signUp({ email, password });
       response.status(201).json(data);
