@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserType {
+enum UserRole {
   GUEST
   RELATIVES
   STAFF
@@ -31,12 +31,12 @@ enum studioStatus {
 
 model User {
   id          Int           @id @default(autoincrement()) @db.UnsignedInt
-  publicId    String        @unique @default(cuid()) @db.Char(25)
+  publicId    String        @unique
   firstName   String        @db.VarChar(36)
   lastName    String        @db.VarChar(36)
   email       String        @unique @db.VarChar(255)
   phoneNumber String?       @db.VarChar(36)
-  type        UserType      @default(GUEST)
+  role        UserRole      @default(GUEST)
   createdAt   DateTime      @default(now()) @db.DateTime(3)
   updatedAt   DateTime      @default(now()) @updatedAt @db.DateTime(3)
   reservation Reservation[]
