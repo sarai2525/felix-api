@@ -1,9 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 import consola from 'consola';
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone.js';
+import utc from 'dayjs/plugin/utc.js';
 import { getAuth, type UserRecord } from 'firebase-admin/auth';
 import firebaseAdmin from '../lib/firebaseAdmin.js';
 import FirebaseAuthClient from '../lib/firebaseAuthClient.js';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 interface User {
   publicId: string;
@@ -44,10 +49,11 @@ async function updateLastLogin({ publicId }): Promise<void> {
         publicId
       },
       data: {
-        lastLogin: dayjs().toISOString()
+        lastLogin: dayjs().utc().toISOString()
       }
     });
-    consola.info(`User ${publicId} logged in`);
+    const jst = dayjs().tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss');
+    consola.info(`User ${publicId} logged in at ${jst}(JST)`);
   } catch (error) {
     consola.error(error);
   } finally {
