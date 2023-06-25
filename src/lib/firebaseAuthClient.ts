@@ -41,35 +41,32 @@ class FirebaseAuthClient {
           }
         ],
         afterResponse: [
-          // TODO: Fix ts2322
-          // (response)=> {
-          //   if (response!.ok) {
-          //     const {requestUrl: {
-          //       pathname,
-          //     }} = response;
-          //     const message = JSON.stringify({
-          //       event: `Succeed to request to Firebase Auth ${pathname}`,
-          //     });
-          //     consola.success(message);
-          //     return response;
-          //   }
-          //   const { statusCode } = response;
-          //   const message = JSON.stringify({
-          //     event: 'Failed to request to Firebase Auth',
-          //     statusCode,
-          //   });
-          //   consola.error(message);
-          // },
+          (response) => {
+            if (response.ok) {
+              const {
+                requestUrl: { pathname }
+              } = response;
+              const message = JSON.stringify({
+                event: `Succeed to request to Firebase Auth ${pathname}`
+              });
+              consola.success(message);
+              return response;
+            }
+            const { body } = response;
+            const { error } = JSON.parse(body.toString());
+            const message = JSON.stringify({
+              event: 'Failed to request to Firebase Auth',
+              statusCode: error.code,
+              statusMessage: error.message
+            });
+            consola.error(message);
+          }
         ]
       }
     });
   }
 
-  // Document: https://firebase.google.com/docs/reference/rest/auth#section-create-email-password
-  public async postSignIn({
-    email = 's.arai@newell-productions.com',
-    password = 'tomato1234'
-  }: Record<string, string>): Promise<SignInUser> {
+  public async postSignIn({ email, password }: Record<string, string>): Promise<SignInUser> {
     const response: SignInUser = await this.client(`accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
       method: 'POST',
       json: {
@@ -81,10 +78,7 @@ class FirebaseAuthClient {
     return response;
   }
 
-  public async postSignUp({
-    email = 'dummy3@newell-productions.com',
-    password = 'tomato1234'
-  }: Record<string, string>): Promise<SignUpUser> {
+  public async postSignUp({ email, password }: Record<string, string>): Promise<SignUpUser> {
     const response: SignUpUser = await this.client(`accounts:signUp?key=${FIREBASE_API_KEY}`, {
       method: 'POST',
       json: {
