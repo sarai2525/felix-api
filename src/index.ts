@@ -1,7 +1,7 @@
-import express, { type Response } from 'express';
 import { consola } from 'consola';
 import cookieParser from 'cookie-parser';
-import router from './router/index';
+import express, { type Response } from 'express';
+import router from './router/index.js';
 
 const app = express();
 const port = 8000;

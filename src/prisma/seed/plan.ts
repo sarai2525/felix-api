@@ -10,10 +10,10 @@ const records = [
     price: 16_500,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '9:00',
-    dateEnd: '12:00',
+    dateEnd: '12:00'
   },
   {
     id: 2,
@@ -22,10 +22,10 @@ const records = [
     price: 21_000,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '13:00',
-    dateEnd: '16:30',
+    dateEnd: '16:30'
   },
   {
     id: 3,
@@ -34,10 +34,10 @@ const records = [
     price: 26_500,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '17:30',
-    dateEnd: '21:30',
+    dateEnd: '21:30'
   },
   {
     id: 4,
@@ -46,10 +46,10 @@ const records = [
     price: 20_000,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '9:00',
-    dateEnd: '12:00',
+    dateEnd: '12:00'
   },
   {
     id: 5,
@@ -58,10 +58,10 @@ const records = [
     price: 26_500,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '13:00',
-    dateEnd: '16:30',
+    dateEnd: '16:30'
   },
   {
     id: 6,
@@ -70,10 +70,10 @@ const records = [
     price: 33_000,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '17:30',
-    dateEnd: '21:30',
+    dateEnd: '21:30'
   },
   {
     id: 7,
@@ -82,10 +82,10 @@ const records = [
     price: 23_000,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '09:00',
-    dateEnd: '12:00',
+    dateEnd: '12:00'
   },
   {
     id: 8,
@@ -94,10 +94,10 @@ const records = [
     price: 29_000,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '13:00',
-    dateEnd: '16:30',
+    dateEnd: '16:30'
   },
   {
     id: 9,
@@ -106,10 +106,10 @@ const records = [
     price: 31_000,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '17:30',
-    dateEnd: '21:30',
+    dateEnd: '21:30'
   },
   {
     id: 10,
@@ -118,10 +118,10 @@ const records = [
     price: 32_500,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '09:00',
-    dateEnd: '16:30',
+    dateEnd: '16:30'
   },
   {
     id: 11,
@@ -130,10 +130,10 @@ const records = [
     price: 41_000,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '16:30',
-    dateEnd: '21:30',
+    dateEnd: '21:30'
   },
   {
     id: 12,
@@ -142,10 +142,10 @@ const records = [
     price: 41_000,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '09:00',
-    dateEnd: '16:30',
+    dateEnd: '16:30'
   },
   {
     id: 13,
@@ -154,10 +154,10 @@ const records = [
     price: 52_500,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '16:30',
-    dateEnd: '21:30',
+    dateEnd: '21:30'
   },
   {
     id: 14,
@@ -166,10 +166,10 @@ const records = [
     price: 47_500,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '09:00',
-    dateEnd: '16:30',
+    dateEnd: '16:30'
   },
   {
     id: 15,
@@ -178,10 +178,10 @@ const records = [
     price: 53_000,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '16:30',
-    dateEnd: '21:30',
+    dateEnd: '21:30'
   },
   {
     id: 16,
@@ -190,10 +190,10 @@ const records = [
     price: 56_000,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '09:00',
-    dateEnd: '21:30',
+    dateEnd: '21:30'
   },
   {
     id: 17,
@@ -202,10 +202,10 @@ const records = [
     price: 71_000,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '09:00',
-    dateEnd: '21:30',
+    dateEnd: '21:30'
   },
   {
     id: 18,
@@ -214,20 +214,19 @@ const records = [
     price: 75_000,
     studioId: 1,
     reservations: {
-      create: [],
+      create: []
     },
     dateIn: '09:00',
-    dateEnd: '21:30',
-  },
+    dateEnd: '21:30'
+  }
 ];
 
-export const plan = async () => {
-  records.forEach(async record => {
-    const { id, name, nameJa, price, studioId, reservations, dateIn, dateEnd }
-      = record;
+export const plan = async (): Promise<void> => {
+  records.forEach(async (record): Promise<void> => {
+    const { id, name, nameJa, price, studioId, reservations, dateIn, dateEnd } = record;
     await prisma.plan.upsert({
       where: {
-        id,
+        id
       },
       create: {
         id,
@@ -237,7 +236,7 @@ export const plan = async () => {
         studioId,
         reservations,
         dateIn,
-        dateEnd,
+        dateEnd
       },
       update: {
         id,
@@ -247,8 +246,8 @@ export const plan = async () => {
         studioId,
         reservations,
         dateIn,
-        dateEnd,
-      },
+        dateEnd
+      }
     });
   });
 };

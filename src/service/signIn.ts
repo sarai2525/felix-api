@@ -1,24 +1,21 @@
-import FirebaseAuthClient, { type SignInUser } from '@/lib/firebaseAuthClient';
+import FirebaseAuthClient from '../lib/firebaseAuthClient.js';
 
-type User = {
+interface User {
   publicId: string;
   displayName: string;
   registered: boolean;
   refreshToken: string;
   idToken: string;
   email: string;
-};
+}
 
-export default async function signIn({
-  email,
-  password,
-}: Record<string, string>): Promise<User> {
+export default async function signIn({ email, password }: Record<string, string>): Promise<User> {
   const {
     localId: publicId,
     displayName,
     idToken,
     registered,
-    refreshToken,
+    refreshToken
   } = await FirebaseAuthClient.postSignIn({ email, password });
   return {
     publicId,
@@ -26,6 +23,6 @@ export default async function signIn({
     idToken,
     registered,
     refreshToken,
-    email,
+    email
   };
 }

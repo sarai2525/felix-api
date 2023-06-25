@@ -8,38 +8,38 @@ const records = [
     name: 'hall',
     status: 'AVAILABLE',
     plans: {
-      create: [],
-    },
+      create: []
+    }
   },
   {
     id: 2,
     name: 'studio',
     status: 'AVAILABLE',
     plans: {
-      create: [],
-    },
-  },
+      create: []
+    }
+  }
 ];
 
-export const studio = async () => {
-  records.forEach(async record => {
+export const studio = async (): Promise<void> => {
+  records.forEach(async (record): Promise<void> => {
     const { id, name, plans } = record;
     await prisma.studio.upsert({
       where: {
-        id,
+        id
       },
       create: {
         id,
         name,
         status: 'AVAILABLE',
-        plans,
+        plans
       },
       update: {
         id,
         name,
         status: 'AVAILABLE',
-        plans,
-      },
+        plans
+      }
     });
   });
 };

@@ -1,5 +1,5 @@
-import { type Request, type Response, type NextFunction } from 'express';
-import signUp from '@/service/signUp';
+import { type NextFunction, type Request, type Response } from 'express';
+import signUp from '../service/signUp.js';
 
 export default [
   async (request: Request, response: Response, next: NextFunction) => {
@@ -10,5 +10,5 @@ export default [
     } catch (error) {
       next(error);
     }
-  },
+  }
 ];
