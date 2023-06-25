@@ -30,86 +30,18 @@ pnpm prisma:prepare
 pnpm dev
 ```
 
-## DB migration
+## Documents
 
-### Usage
-
-`$ prisma migrate [command] [options]`
-
-### Commands for development
-
-- dev: Create a migration from changes in Prisma schema, apply it to the database trigger generators (e.g. Prisma Client)
-- reset: Reset your database and apply all migrations, all data will be lost
-
-### Commands for production/staging
-
-- deploy: Apply pending migrations to the database
-- status: Check the status of your database migrations
-- resolve: Resolve issues with database migrations, i.e. baseline, failed migration, hotfix
-
-### Command for any stage
-
-- diff: Compare the database schema from two arbitrary sources
-
-### Options
-
-```.sh
--h, --help   Display this help message
-
---schema   Custom path to your Prisma schema
-```
-
-### Examples
-
-Create a migration from changes in Prisma schema, apply it to the database, trigger generators (e.g. Prisma Client)
-
-```.sh
-$ prisma migrate dev
-```
-
-Reset your database and apply all migrations
-
-```.sh
-$ prisma migrate reset
-```
-
-Apply pending migrations to the database in production/staging
-
-```.sh
-$ prisma migrate deploy
-```
-
-Check the status of migrations in the production/staging database
-
-```.sh
-$ prisma migrate status
-```
-
-Specify a schema
-
-```.sh
-$ prisma migrate status --schema=./schema.prisma
-```
-
-Compare the database schema from two databases and render the diff as a SQL script
-
-```.sh
-$ prisma migrate diff \
-    --from-url "$DATABASE_URL" \
-    --to-url "postgresql://login:password@localhost:5432/db" \
-    --script
-```
-
----
+- [firebase admin](https://firebase.google.com/docs/admin/migrate-node-v10)
+- [firebase auth](https://firebase.google.com/docs/reference/rest/auth#section-api-usage)
 
 ## Modules
 
 - [express](https://expressjs.com/en/5x/api.html)
+- [got](https://github.com/sindresorhus/got/tree/main)
 - [prisma](https://www.prisma.io/)
 - [consola](https://github.com/unjs/consola)
 - [vitest](https://vitest.dev/)
-- [tsx](https://github.com/esbuild-kit/tsx)
-- [firebase](https://github.com/firebase/firebase-js-sdk)
 - [zod](https://zod.dev/)
 
 ## Recommended Softwares
