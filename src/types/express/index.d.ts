@@ -1,6 +1,6 @@
 declare namespace Express {
-  type Request = {
-    email: string;
-    password: string;
-  };
+  interface Request {
+    email: string
+    password: string
+  }
 }

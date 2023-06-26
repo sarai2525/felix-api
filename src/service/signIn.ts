@@ -1,21 +1,21 @@
-import { PrismaClient } from '@prisma/client';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone.js';
-import utc from 'dayjs/plugin/utc.js';
-import { getAuth, type UserRecord } from 'firebase-admin/auth';
-import firebaseAdmin from '../lib/firebaseAdmin.js';
-import FirebaseAuthClient from '../lib/firebaseAuthClient.js';
+import { PrismaClient } from '@prisma/client'
+import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone.js'
+import utc from 'dayjs/plugin/utc.js'
+import { getAuth, type UserRecord } from 'firebase-admin/auth'
+import firebaseAdmin from '../lib/firebaseAdmin.js'
+import FirebaseAuthClient from '../lib/firebaseAuthClient.js'
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 interface User {
-  publicId: string;
-  displayName: string;
-  registered: boolean;
-  idToken: string;
-  email: string;
-  role: string;
+  publicId: string
+  displayName: string
+  registered: boolean
+  idToken: string
+  email: string
+  role: string
 }
 
 export default async function signIn({ email, password }: Record<string, string>): Promise<User> {
@@ -24,9 +24,9 @@ export default async function signIn({ email, password }: Record<string, string>
     displayName,
     idToken,
     registered
-  } = await FirebaseAuthClient.postSignIn({ email, password });
-  const user: UserRecord = await getAuth(firebaseAdmin).getUser(publicId);
-  await updateLastLogin({ publicId });
+  } = await FirebaseAuthClient.postSignIn({ email, password })
+  const user: UserRecord = await getAuth(firebaseAdmin).getUser(publicId)
+  await updateLastLogin({ publicId })
   return {
     publicId,
     displayName,
@@ -34,11 +34,11 @@ export default async function signIn({ email, password }: Record<string, string>
     registered,
     email,
     role: user.customClaims!.role
-  };
+  }
 }
 
 async function updateLastLogin({ publicId }): Promise<void> {
-  const prisma = new PrismaClient();
+  const prisma = new PrismaClient()
   try {
     await prisma.user.update({
       where: {
@@ -47,10 +47,10 @@ async function updateLastLogin({ publicId }): Promise<void> {
       data: {
         lastLogin: dayjs().utc().toISOString()
       }
-    });
+    })
   } catch (error) {
-    await Promise.reject(new Error(error));
+    await Promise.reject(new Error(error))
   } finally {
-    await prisma.$disconnect();
+    await prisma.$disconnect()
   }
 }

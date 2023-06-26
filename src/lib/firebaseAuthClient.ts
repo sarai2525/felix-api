@@ -1,32 +1,32 @@
-import 'dotenv/config.js';
-import got from 'got';
-import logger from './logger.js';
+import 'dotenv/config.js'
+import got from 'got'
+import logger from './logger.js'
 
-const FIREBASE_API_URL: string | undefined = process.env.FIREBASE_API_BASE_URL;
-const FIREBASE_API_KEY: string | undefined = process.env.FIREBASE_API_KEY;
+const FIREBASE_API_URL: string | undefined = process.env.FIREBASE_API_BASE_URL
+const FIREBASE_API_KEY: string | undefined = process.env.FIREBASE_API_KEY
 
 export interface SignInUser {
-  idToken: string;
-  email: string;
-  refreshToken: string;
-  expiresIn: string;
-  localId: string;
-  registered: boolean;
-  kind: string;
-  displayName: string;
+  idToken: string
+  email: string
+  refreshToken: string
+  expiresIn: string
+  localId: string
+  registered: boolean
+  kind: string
+  displayName: string
 }
 
 export interface SignUpUser {
-  kind: string;
-  idToken: string;
-  email: string;
-  refreshToken: string;
-  expiresIn: string;
-  localId: string;
+  kind: string
+  idToken: string
+  email: string
+  refreshToken: string
+  expiresIn: string
+  localId: string
 }
 
 class FirebaseAuthClient {
-  private readonly client: typeof got;
+  private readonly client: typeof got
   constructor() {
     this.client = got.extend({
       prefixUrl: FIREBASE_API_URL,
@@ -34,15 +34,15 @@ class FirebaseAuthClient {
         beforeRequest: [
           (_options) => {
             if (FIREBASE_API_KEY === undefined) {
-              throw new Error('FIRE_BASE_API_KEY is undefined');
+              throw new Error('FIRE_BASE_API_KEY is undefined')
             }
           }
         ],
         afterResponse: [
           async (response) => {
-            const { body, requestUrl, method } = response;
+            const { body, requestUrl, method } = response
             if (!response.ok) {
-              const { error } = JSON.parse(body as string);
+              const { error } = JSON.parse(body as string)
               const message = {
                 event: 'Failed to request to Firebase Auth',
                 request: {
@@ -51,9 +51,9 @@ class FirebaseAuthClient {
                 },
                 statusCode: error.code,
                 statusMessage: error.message
-              };
-              logger.warn(message);
-              return await Promise.reject(new Error(error.message));
+              }
+              logger.warn(message)
+              return await Promise.reject(new Error(error.message))
             }
             if (process.env.LOG_LEVEL === 'debug') {
               const message = {
@@ -63,14 +63,14 @@ class FirebaseAuthClient {
                   method
                 },
                 body: JSON.parse(response.body as string)
-              };
-              logger.debug(message);
+              }
+              logger.debug(message)
             }
-            return response;
+            return response
           }
         ]
       }
-    });
+    })
   }
 
   public async postSignIn({ email, password }: Record<string, string>): Promise<SignInUser> {
@@ -81,8 +81,8 @@ class FirebaseAuthClient {
         password,
         returnSecureToken: true
       }
-    }).json();
-    return response;
+    }).json()
+    return response
   }
 
   public async postSignUp({ email, password }: Record<string, string>): Promise<SignUpUser> {
@@ -93,8 +93,8 @@ class FirebaseAuthClient {
         password,
         returnSecureToken: true
       }
-    }).json();
-    return response;
+    }).json()
+    return response
   }
 
   public async sendConfirmationEmail({ idToken }): Promise<string> {
@@ -104,9 +104,9 @@ class FirebaseAuthClient {
         requestType: 'VERIFY_EMAIL',
         idToken
       }
-    }).json();
-    return response;
+    }).json()
+    return response
   }
 }
 
-export default new FirebaseAuthClient();
+export default new FirebaseAuthClient()

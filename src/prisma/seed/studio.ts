@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 const records = [
   {
@@ -19,11 +19,11 @@ const records = [
       create: []
     }
   }
-];
+]
 
 export const studio = async (): Promise<void> => {
   records.forEach(async (record): Promise<void> => {
-    const { id, name, plans } = record;
+    const { id, name, plans } = record
     await prisma.studio.upsert({
       where: {
         id
@@ -40,6 +40,6 @@ export const studio = async (): Promise<void> => {
         status: 'AVAILABLE',
         plans
       }
-    });
-  });
-};
+    })
+  })
+}

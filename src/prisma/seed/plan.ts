@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 const records = [
   {
@@ -219,11 +219,11 @@ const records = [
     dateIn: '09:00',
     dateEnd: '21:30'
   }
-];
+]
 
 export const plan = async (): Promise<void> => {
   records.forEach(async (record): Promise<void> => {
-    const { id, name, nameJa, price, studioId, reservations, dateIn, dateEnd } = record;
+    const { id, name, nameJa, price, studioId, reservations, dateIn, dateEnd } = record
     await prisma.plan.upsert({
       where: {
         id
@@ -248,6 +248,6 @@ export const plan = async (): Promise<void> => {
         dateIn,
         dateEnd
       }
-    });
-  });
-};
+    })
+  })
+}

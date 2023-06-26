@@ -3,4 +3,4 @@ export const USER_ROLE = {
   RELATIVES: 'RELATIVES',
   STAFF: 'STAFF',
   ADMIN: 'ADMIN'
-} as const;
+} as const

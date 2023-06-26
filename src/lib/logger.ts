@@ -1,6 +1,6 @@
-import 'dotenv/config.js';
-import { pino } from 'pino';
+import 'dotenv/config.js'
+import { pino } from 'pino'
 
-const logger = pino({ level: process.env?.LOG_LEVEL ?? 'info' });
+const logger = pino({ level: process.env?.LOG_LEVEL ?? 'info' })
 
-export default logger;
+export default logger
