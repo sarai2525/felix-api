@@ -20,6 +20,6 @@
     "forceConsistentCasingInFileNames": true,
   },
   "rootDir": "./",
-  "exclude": ["node_modules","dist"],
+  "exclude": ["node_modules","dist", "src/prisma/seed/**/*"],
   "include": ["src/**/*", "test/**/*"]
 }
