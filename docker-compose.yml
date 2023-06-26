@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  api:
+  app:
     build: .
     container_name: felix-api-container
     hostname: felix-api
