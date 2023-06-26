@@ -14,7 +14,7 @@
     "strictNullChecks": true,
     "esModuleInterop": true,
     "moduleResolution": "Node16",
-    "typeRoots" : ["./src/types", "./node_modules/@types", "firebase-admin"],
+    "typeRoots" : ["./src/types", "./node_modules/@types"],
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
