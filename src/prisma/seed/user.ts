@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { getAuth, type UserRecord } from 'firebase-admin/auth'
+import { USER_ROLE } from '../../constants/user.js'
 import firebaseAdmin from '../../lib/firebaseAdmin.js'
 
 const prisma = new PrismaClient()
@@ -25,7 +26,7 @@ export const user = async (): Promise<void> => {
       create: {
         publicId: uid,
         email,
-        role: customClaims!.role,
+        role: customClaims?.role ?? USER_ROLE.GUEST,
         reservation: {
           create: []
         },
@@ -36,7 +37,7 @@ export const user = async (): Promise<void> => {
       update: {
         publicId: uid,
         email,
-        role: customClaims!.role,
+        role: customClaims?.role ?? USER_ROLE.GUEST,
         reservation: {
           create: []
         },
