@@ -10,9 +10,9 @@ dayjs.extend(timezone)
 
 export default [
   async (request: Request, response: Response, next: NextFunction) => {
-    const { email, password } = request.body
+    const { email, password, role } = request.body
     try {
-      const data = await signUp({ email, password })
+      const data = await signUp({ email, password, role })
       const jst = dayjs().tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss')
       logger.info(`User ${data.publicId} has been created at ${jst}(JST)`)
       response.status(201).json(data)

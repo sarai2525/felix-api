@@ -18,7 +18,13 @@ interface User {
   role: string
 }
 
-export default async function signIn({ email, password }: Record<string, string>): Promise<User> {
+interface SignIn {
+  email: string
+  password: string
+  role?: string
+}
+
+export default async function signIn({ email, password }: SignIn): Promise<User> {
   const {
     localId: publicId,
     displayName,

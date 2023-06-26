@@ -10,10 +10,15 @@ interface User {
   idToken: string
 }
 
-export default async function signUp({ email, password }: Record<string, string>): Promise<User> {
+interface SignUp {
+  email: string
+  password: string
+  role?: string
+}
+
+export default async function signUp({ email, password, role }: SignUp): Promise<User> {
   const { localId: publicId, email: emailAddress, idToken } = await FirebaseAuthClient.postSignUp({ email, password })
-  const role = USER_ROLE.STAFF
-  await setCustomRole(publicId, role)
+  await setCustomRole({ publicId, role })
   await createUser({ publicId, emailAddress, role })
   await sendConfirmationEmail(idToken)
   return {
@@ -23,9 +28,9 @@ export default async function signUp({ email, password }: Record<string, string>
   }
 }
 
-async function setCustomRole(publicId, role): Promise<void> {
+async function setCustomRole({ publicId, role }): Promise<void> {
   await getAuth(firebaseAdmin).setCustomUserClaims(publicId, {
-    role
+    role: role ?? USER_ROLE.GUEST
   })
 }
 
@@ -39,7 +44,7 @@ async function createUser({ publicId, emailAddress, role }): Promise<void> {
         firstName: '',
         lastName: '',
         phoneNumber: '',
-        role
+        role: role ?? USER_ROLE.GUEST
       }
     })
   } catch (error) {
