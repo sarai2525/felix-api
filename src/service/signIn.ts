@@ -5,7 +5,6 @@ import utc from 'dayjs/plugin/utc.js';
 import { getAuth, type UserRecord } from 'firebase-admin/auth';
 import firebaseAdmin from '../lib/firebaseAdmin.js';
 import FirebaseAuthClient from '../lib/firebaseAuthClient.js';
-import logger from '../lib/logger.js';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -14,7 +13,6 @@ interface User {
   publicId: string;
   displayName: string;
   registered: boolean;
-  refreshToken: string;
   idToken: string;
   email: string;
   role: string;
@@ -25,8 +23,7 @@ export default async function signIn({ email, password }: Record<string, string>
     localId: publicId,
     displayName,
     idToken,
-    registered,
-    refreshToken
+    registered
   } = await FirebaseAuthClient.postSignIn({ email, password });
   const user: UserRecord = await getAuth(firebaseAdmin).getUser(publicId);
   await updateLastLogin({ publicId });
@@ -35,7 +32,6 @@ export default async function signIn({ email, password }: Record<string, string>
     displayName,
     idToken,
     registered,
-    refreshToken,
     email,
     role: user.customClaims!.role
   };
@@ -52,12 +48,9 @@ async function updateLastLogin({ publicId }): Promise<void> {
         lastLogin: dayjs().utc().toISOString()
       }
     });
-    const jst = dayjs().tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss');
-    logger.info(`User ${publicId} logged in at ${jst}(JST)`);
   } catch (error) {
-    logger.error(error);
+    await Promise.reject(new Error(error));
   } finally {
     await prisma.$disconnect();
-    logger.debug('Prisma client disconnected');
   }
 }
