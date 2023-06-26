@@ -25,6 +25,33 @@ export interface SignUpUser {
   localId: string
 }
 
+async function clientErrorHandle({ body, requestUrl, method }): Promise<never> {
+  const { error } = JSON.parse(body as string)
+  const message = {
+    event: 'Failed to request to Firebase Auth',
+    request: {
+      url: `${requestUrl.pathname}`,
+      method
+    },
+    statusCode: error.code,
+    statusMessage: error.message
+  }
+  logger.warn(message)
+  return await Promise.reject(new Error(error.message))
+}
+
+function clientSucceedDebugging({ response, requestUrl, method }): void {
+  const message = {
+    event: `Succeed to request to Firebase Auth`,
+    request: {
+      url: `${requestUrl.pathname}`,
+      method
+    },
+    body: JSON.parse(response.body as string)
+  }
+  logger.debug(message)
+}
+
 class FirebaseAuthClient {
   private readonly client: typeof got
   constructor() {
@@ -42,29 +69,10 @@ class FirebaseAuthClient {
           async (response) => {
             const { body, requestUrl, method } = response
             if (!response.ok) {
-              const { error } = JSON.parse(body as string)
-              const message = {
-                event: 'Failed to request to Firebase Auth',
-                request: {
-                  url: `${requestUrl.pathname}`,
-                  method
-                },
-                statusCode: error.code,
-                statusMessage: error.message
-              }
-              logger.warn(message)
-              return await Promise.reject(new Error(error.message))
+              await clientErrorHandle({ body, requestUrl, method })
             }
             if (process.env.LOG_LEVEL === 'debug') {
-              const message = {
-                event: `Succeed to request to Firebase Auth`,
-                request: {
-                  url: `${requestUrl.pathname}`,
-                  method
-                },
-                body: JSON.parse(response.body as string)
-              }
-              logger.debug(message)
+              clientSucceedDebugging({ response, requestUrl, method })
             }
             return response
           }
