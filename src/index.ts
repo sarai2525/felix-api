@@ -1,4 +1,3 @@
-import { consola } from 'consola';
 import cookieParser from 'cookie-parser';
 import express, { type Response } from 'express';
 import router from './router/index.js';
@@ -14,5 +13,5 @@ app.get('/', (_request, response: Response) => {
 });
 
 app.listen(port, () => {
-  consola.success(`http://localhost:${port}`);
+  console.log(`🚀 http://localhost:${port} 🚀`);
 });

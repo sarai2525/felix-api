@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
-import consola from 'consola';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone.js';
 import utc from 'dayjs/plugin/utc.js';
 import { getAuth, type UserRecord } from 'firebase-admin/auth';
 import firebaseAdmin from '../lib/firebaseAdmin.js';
 import FirebaseAuthClient from '../lib/firebaseAuthClient.js';
+import logger from '../lib/logger.js';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -53,11 +53,11 @@ async function updateLastLogin({ publicId }): Promise<void> {
       }
     });
     const jst = dayjs().tz('Asia/Tokyo').format('YYYY-MM-DD HH:mm:ss');
-    consola.info(`User ${publicId} logged in at ${jst}(JST)`);
+    logger.info(`User ${publicId} logged in at ${jst}(JST)`);
   } catch (error) {
-    consola.error(error);
+    logger.error(error);
   } finally {
     await prisma.$disconnect();
-    consola.info('Prisma client disconnected');
+    logger.debug('Prisma client disconnected');
   }
 }

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { consola } from 'consola';
+import logger from '../../lib/logger.js';
 import { plan } from './plan.js';
 import { studio } from './studio.js';
 import { user } from './user.js';
@@ -7,7 +7,7 @@ import { user } from './user.js';
 const prisma = new PrismaClient();
 
 async function main(): Promise<void> {
-  consola.info('start seeding');
+  logger.info('Start seeding');
   await user();
   await studio();
   await plan();
@@ -15,9 +15,9 @@ async function main(): Promise<void> {
 
 main()
   .catch((error) => {
-    consola.error(error);
+    logger.warn(error);
   })
   .finally(async (): Promise<void> => {
-    consola.info('quit seeding');
+    logger.info('Quit seeding');
     await prisma.$disconnect();
   });
