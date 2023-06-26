@@ -14,7 +14,7 @@ async function getUser(publicId: string): Promise<UserRecord> {
 
 export const user = async (): Promise<void> => {
   // eslint-disable-next-line @typescript-eslint/await-thenable
-  const records = await await listUsers()
+  const records = await listUsers()
   records.forEach(async (record): Promise<void> => {
     const { email, uid } = record
     const { customClaims } = await getUser(uid)
