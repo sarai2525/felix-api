@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8
+    ports:
+      - 3306:3306
+    container_name: felix-dev-db
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_USER: 'docker'
+      MYSQL_PASSWORD: 'docker'
+      MYSQL_DATABASE: 'felix_dev'
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - db-store:/var/lib/mysql
+      - ./docker/mysql/sql:/docker-entrypoint-initdb.d
+
+volumes:
+  db-store:
