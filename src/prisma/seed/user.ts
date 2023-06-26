@@ -17,15 +17,14 @@ export const user = async (): Promise<void> => {
   // eslint-disable-next-line @typescript-eslint/await-thenable
   const records = await listUsers()
   records.forEach(async (record): Promise<void> => {
-    const { email, uid } = record
-    const { customClaims } = await getUser(uid)
+    const { customClaims } = await getUser(record.uid)
     await prisma.user.upsert({
       where: {
-        publicId: uid
+        publicId: record.uid
       },
       create: {
-        publicId: uid,
-        email,
+        publicId: record.uid,
+        email: record.email ?? '',
         role: customClaims?.role ?? USER_ROLE.GUEST,
         reservation: {
           create: []
@@ -35,8 +34,8 @@ export const user = async (): Promise<void> => {
         phoneNumber: null
       },
       update: {
-        publicId: uid,
-        email,
+        publicId: record.uid,
+        email: record.email,
         role: customClaims?.role ?? USER_ROLE.GUEST,
         reservation: {
           create: []

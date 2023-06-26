@@ -9,7 +9,7 @@
     "target": "ES2021",
     "sourceMap": true,
     "allowJs": false,
-    "outDir": "dist",
+    "outDir": "./dist",
     "baseUrl": "./",
     "strictNullChecks": true,
     "esModuleInterop": true,
