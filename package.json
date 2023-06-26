@@ -14,9 +14,10 @@
     "prepare": "husky install",
     "prisma:generate": "prisma generate --schema=./src/prisma/schema.prisma",
     "prisma:migrate": "prisma migrate dev --schema=./src/prisma/schema.prisma",
-    "prisma:seed": "tsx ./src/prisma/seed/index.ts",
-    "prisma:prepare": "pnpm prisma:generate && pnpm prisma:migrate && pnpm prisma:seed",
-    "prisma:studio": "prisma studio --schema=./src/prisma/schema.prisma"
+    "prisma:prepare": "pnpm prisma:generate && pnpm prisma:migrate && pnpm seed:dev",
+    "prisma:studio": "prisma studio --schema=./src/prisma/schema.prisma",
+    "seed:dev": "tsx ./src/prisma/seed/index.ts",
+    "seed:prod": "node ./dist/prisma/seed/index.js"
   },
   "keywords": [],
   "author": "",
