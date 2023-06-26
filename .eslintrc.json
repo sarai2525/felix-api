@@ -13,7 +13,7 @@
         "project": "./tsconfig.json"
     },
     "rules": {
-        "@typescript-eslint/object-curly-spacing": "off",
+        "@typescript-eslint/object-curly-spacing": ["error", "always"],
         "import/extensions": ["error", "always", { "ignorePackages": true }],
         "@typescript-eslint/restrict-template-expressions": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
