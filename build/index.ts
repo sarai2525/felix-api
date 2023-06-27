@@ -3,7 +3,7 @@ import { glob } from 'glob'
 const entryPoints = glob.sync('./src/**/*.ts')
 
 await esbuild.build({
-  bundle: false,
+  bundle: true,
   entryPoints,
   outbase: './src',
   outdir: './dist',
