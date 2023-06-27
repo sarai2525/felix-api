@@ -30,6 +30,14 @@ pnpm prisma:prepare
 pnpm dev
 ```
 
+## build & deploy & start app
+
+```.sh
+pnpm build
+
+pnpm start
+```
+
 ## Documents
 
 - [firebase admin](https://firebase.google.com/docs/admin/migrate-node-v10)
