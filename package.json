@@ -2,9 +2,9 @@
   "name": "felix-api",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/index.js",
+  "main": "./dist/index.mjs",
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/index.mjs"
   },
   "type": "module",
   "scripts": {
@@ -18,7 +18,7 @@
     "prisma:prepare": "pnpm prisma:generate && pnpm prisma:migrate && pnpm seed:dev",
     "prisma:studio": "prisma studio --schema=./src/prisma/schema.prisma",
     "seed:dev": "tsx ./src/prisma/seed/index.ts",
-    "seed:prod": "node ./dist/prisma/seed/index.js"
+    "seed:prod": "node ./dist/prisma/seed/index.mjs"
   },
   "keywords": [],
   "author": "",
