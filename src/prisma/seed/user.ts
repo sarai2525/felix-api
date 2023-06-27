@@ -1,7 +1,8 @@
-import { PrismaClient } from '@prisma/client'
+import pkg from '@prisma/client'
 import { getAuth, type UserRecord } from 'firebase-admin/auth'
 import { USER_ROLE } from '../../constants/user.js'
-import firebaseAdmin from '../../lib/firebaseAdmin.js'
+import { firebaseAdmin } from '../../lib/firebaseAdmin.js'
+const { PrismaClient } = pkg
 
 const prisma = new PrismaClient()
 
@@ -10,6 +11,7 @@ async function listUsers(): Promise<UserRecord[]> {
 }
 
 async function getUser(publicId: string): Promise<UserRecord> {
+  // eslint-disable-next-line @typescript-eslint/await-thenable
   return await getAuth(firebaseAdmin).getUser(publicId)
 }
 

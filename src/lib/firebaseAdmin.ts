@@ -7,11 +7,9 @@ const firebaseCert = {
   privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY!.replace(/\\n/g, '\n') // Ref: https://stackoverflow.com/questions/50299329/node-js-firebase-service-account-private-key-wont-parse
 }
 
-const firebaseAdmin: App =
+export const firebaseAdmin: App =
   getApps().length === 0
     ? initializeApp({
         credential: cert(firebaseCert)
       })
     : getApp()
-
-export default firebaseAdmin
