@@ -1,8 +1,11 @@
 import esbuild from 'esbuild'
+import { glob } from 'glob'
+const entryPoints = glob.sync('./src/**/*.ts')
 
 await esbuild.build({
-  bundle: true,
-  entryPoints: ['./src/index.ts'],
+  bundle: false,
+  entryPoints,
+  outbase: './src',
   outdir: './dist',
   outExtension: {
     '.js': '.mjs'
