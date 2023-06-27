@@ -1,5 +1,5 @@
 import 'dotenv/config.js'
-import got, { type Response } from 'got'
+import got, { type CancelableRequest, type Response } from 'got'
 import { logger } from './logger.js'
 
 const FIREBASE_API_URL: string | undefined = process.env.FIREBASE_API_BASE_URL
@@ -81,9 +81,8 @@ class FirebaseAuthClient {
     })
   }
 
-  public async postSignIn({ email, password }: Record<string, string>): Promise<SignInUser> {
-    // Fix this to return SignInUser type
-    const response = (async () =>
+  public async postSignIn({ email, password }: Record<string, string>): Promise<CancelableRequest<SignInUser>> {
+    const response = (async (): Promise<CancelableRequest<SignInUser>> =>
       this.client(`accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
         method: 'POST',
         json: {
@@ -95,8 +94,8 @@ class FirebaseAuthClient {
     return await response
   }
 
-  public async postSignUp({ email, password }: Record<string, string>): Promise<SignUpUser> {
-    const response: SignUpUser = (async () =>
+  public async postSignUp({ email, password }: Record<string, string>): Promise<CancelableRequest<SignInUser>> {
+    const response = (async (): Promise<CancelableRequest<SignInUser>> =>
       this.client(`accounts:signUp?key=${FIREBASE_API_KEY}`, {
         method: 'POST',
         json: {
@@ -105,11 +104,11 @@ class FirebaseAuthClient {
           returnSecureToken: true
         }
       }).json())()
-    return response
+    return await response
   }
 
-  public async sendConfirmationEmail({ idToken }): Promise<string> {
-    const response: string = (async () =>
+  public async sendConfirmationEmail({ idToken }): Promise<CancelableRequest<string>> {
+    const response = (async (): Promise<CancelableRequest<string>> =>
       this.client(`accounts:sendOobCode?key=${FIREBASE_API_KEY}`, {
         method: 'POST',
         json: {
@@ -117,7 +116,7 @@ class FirebaseAuthClient {
           idToken
         }
       }).json())()
-    return response
+    return await response
   }
 }
 
