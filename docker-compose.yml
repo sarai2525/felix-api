@@ -1,17 +1,31 @@
 version: '3'
 
 services:
+  # app:
+  #   build: .
+  #   container_name: felix-api-container
+  #   hostname: felix-api
+  #   command: sh prisma.sh
+  #   depends_on:
+  #     - db
+  #   ports:
+  #     - 8000:8000
+  #   volumes:
+  #     - .:/app
+  #     - /app/node_modules
   db:
     image: mysql:8
+    restart: always
+    container_name: felix-db-container
+    hostname: felix-db
     ports:
       - 3306:3306
-    container_name: felix-dev-db
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_USER: 'docker'
       MYSQL_PASSWORD: 'docker'
-      MYSQL_DATABASE: 'felix_dev'
+      MYSQL_DATABASE: 'felix'
       TZ: 'Asia/Tokyo'
     volumes:
       - db-store:/var/lib/mysql

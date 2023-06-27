@@ -1,7 +1,9 @@
 declare namespace Express {
   interface Request {
-    email: string
-    password: string
-    role?: string
+    body: unknown
+  }
+  // add interface body to Response
+  interface Response {
+    status: (status: number) => Response
   }
 }

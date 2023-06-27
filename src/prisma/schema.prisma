@@ -31,7 +31,7 @@ enum studioStatus {
 
 model User {
   id          Int           @id @default(autoincrement()) @db.UnsignedInt
-  publicId    String        @unique
+  publicId    String        @unique @db.VarChar(128)
   firstName   String        @db.VarChar(36)
   lastName    String        @db.VarChar(36)
   email       String        @unique @db.VarChar(255)

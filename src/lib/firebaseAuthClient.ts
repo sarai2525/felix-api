@@ -1,6 +1,6 @@
 import 'dotenv/config.js'
-import got from 'got'
-import logger from './logger.js'
+import got, { type Response } from 'got'
+import { logger } from './logger.js'
 
 const FIREBASE_API_URL: string | undefined = process.env.FIREBASE_API_BASE_URL
 const FIREBASE_API_KEY: string | undefined = process.env.FIREBASE_API_KEY
@@ -66,10 +66,10 @@ class FirebaseAuthClient {
           }
         ],
         afterResponse: [
-          async (response) => {
+          async (response: Response): Promise<Response> => {
             const { body, requestUrl, method } = response
-            if (!response.ok) {
-              await clientErrorHandle({ body, requestUrl, method })
+            if (response.ok === false) {
+              await clientErrorHandle({ body, requestUrl, method, response })
             }
             if (process.env.LOG_LEVEL === 'debug') {
               clientSucceedDebugging({ response, requestUrl, method })
@@ -82,39 +82,43 @@ class FirebaseAuthClient {
   }
 
   public async postSignIn({ email, password }: Record<string, string>): Promise<SignInUser> {
-    const response: SignInUser = await this.client(`accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
-      method: 'POST',
-      json: {
-        email,
-        password,
-        returnSecureToken: true
-      }
-    }).json()
-    return response
+    // Fix this to return SignInUser type
+    const response = (async () =>
+      this.client(`accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
+        method: 'POST',
+        json: {
+          email,
+          password,
+          returnSecureToken: true
+        }
+      }).json())()
+    return await response
   }
 
   public async postSignUp({ email, password }: Record<string, string>): Promise<SignUpUser> {
-    const response: SignUpUser = await this.client(`accounts:signUp?key=${FIREBASE_API_KEY}`, {
-      method: 'POST',
-      json: {
-        email,
-        password,
-        returnSecureToken: true
-      }
-    }).json()
+    const response: SignUpUser = (async () =>
+      this.client(`accounts:signUp?key=${FIREBASE_API_KEY}`, {
+        method: 'POST',
+        json: {
+          email,
+          password,
+          returnSecureToken: true
+        }
+      }).json())()
     return response
   }
 
   public async sendConfirmationEmail({ idToken }): Promise<string> {
-    const response: string = await this.client(`accounts:sendOobCode?key=${FIREBASE_API_KEY}`, {
-      method: 'POST',
-      json: {
-        requestType: 'VERIFY_EMAIL',
-        idToken
-      }
-    }).json()
+    const response: string = (async () =>
+      this.client(`accounts:sendOobCode?key=${FIREBASE_API_KEY}`, {
+        method: 'POST',
+        json: {
+          requestType: 'VERIFY_EMAIL',
+          idToken
+        }
+      }).json())()
     return response
   }
 }
 
-export default new FirebaseAuthClient()
+export const firebaseAuthClient = new FirebaseAuthClient()
