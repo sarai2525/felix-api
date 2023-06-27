@@ -25,6 +25,21 @@ export interface SignUpUser {
   localId: string
 }
 
+export interface UpdateEmailResponse {
+  idToken: string
+  email: string
+  refreshToken: string
+  expiresIn: string
+  localId: string
+}
+
+export interface UpdatePasswordResponse {
+  idToken: string
+  refreshToken: string
+  expiresIn: string
+  localId: string
+}
+
 async function clientErrorHandle({ body, requestUrl, method }): Promise<never> {
   const { error } = JSON.parse(body as string)
   const message = {
@@ -114,6 +129,36 @@ class FirebaseAuthClient {
       }
     }).json()
     return response
+  }
+
+  public async updateEmail({ idToken, newEmail, password }): Promise<SignInUser> {
+    await this.client(`accounts:update?key=${FIREBASE_API_KEY}`, {
+      method: 'POST',
+      json: {
+        idToken,
+        email: newEmail,
+        returnSecureToken: true
+      }
+    }).json()
+
+    const user: SignInUser = await this.postSignIn({ email: newEmail, password })
+
+    return user
+  }
+
+  public async updatePassword({ idToken, newPassword, email }): Promise<SignInUser> {
+    await this.client(`accounts:update?key=${FIREBASE_API_KEY}`, {
+      method: 'POST',
+      json: {
+        idToken,
+        password: newPassword,
+        returnSecureToken: true
+      }
+    }).json()
+
+    const user: SignInUser = await this.postSignIn({ email, password: newPassword })
+
+    return user
   }
 }
 
