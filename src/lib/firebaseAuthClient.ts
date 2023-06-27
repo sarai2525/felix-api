@@ -25,6 +25,8 @@ export interface SignUpUser {
   localId: string
 }
 
+type FirebaseAuthClientResponse<T = SignInUser | SignUpUser | string> = Promise<CancelableRequest<T>>
+
 async function clientErrorHandle({ body, requestUrl, method }): Promise<never> {
   const { error } = JSON.parse(body as string)
   const message = {
@@ -81,8 +83,8 @@ class FirebaseAuthClient {
     })
   }
 
-  public async postSignIn({ email, password }: Record<string, string>): Promise<CancelableRequest<SignInUser>> {
-    const response = (async (): Promise<CancelableRequest<SignInUser>> =>
+  public async postSignIn({ email, password }: Record<string, string>): FirebaseAuthClientResponse<SignInUser> {
+    const response = (async (): FirebaseAuthClientResponse<SignInUser> =>
       this.client(`accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
         method: 'POST',
         json: {
@@ -94,8 +96,8 @@ class FirebaseAuthClient {
     return await response
   }
 
-  public async postSignUp({ email, password }: Record<string, string>): Promise<CancelableRequest<SignInUser>> {
-    const response = (async (): Promise<CancelableRequest<SignInUser>> =>
+  public async postSignUp({ email, password }: Record<string, string>): FirebaseAuthClientResponse<SignInUser> {
+    const response = (async (): FirebaseAuthClientResponse<SignInUser> =>
       this.client(`accounts:signUp?key=${FIREBASE_API_KEY}`, {
         method: 'POST',
         json: {
@@ -107,8 +109,8 @@ class FirebaseAuthClient {
     return await response
   }
 
-  public async sendConfirmationEmail({ idToken }): Promise<CancelableRequest<string>> {
-    const response = (async (): Promise<CancelableRequest<string>> =>
+  public async sendConfirmationEmail({ idToken }): FirebaseAuthClientResponse<string> {
+    const response = (async (): FirebaseAuthClientResponse<string> =>
       this.client(`accounts:sendOobCode?key=${FIREBASE_API_KEY}`, {
         method: 'POST',
         json: {
