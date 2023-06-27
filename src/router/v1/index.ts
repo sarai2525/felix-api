@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import signIn from '../router/signIn.js'
-import signUp from '../router/signUp.js'
+import signIn from './signIn.js'
+import signUp from './signUp.js'
 
 const router = Router()
 
