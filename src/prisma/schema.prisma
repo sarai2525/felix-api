@@ -57,7 +57,7 @@ model Plan {
   name         String        @db.VarChar(70)
   nameJa       String        @db.VarChar(70)
   price        Decimal       @db.Decimal(10, 2)
-  studio       Studio        @relation(fields: [studioId], references: [id])
+  studio       Studio        @relation(fields: [studioId], references: [id], onDelete: Cascade)
   studioId     Int           @db.UnsignedInt
   reservations Reservation[]
   dateIn       String?
