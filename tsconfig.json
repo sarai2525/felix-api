@@ -21,7 +21,8 @@
     "preserveSymlinks": true,
     "forceConsistentCasingInFileNames": true,
     "strictFunctionTypes": true,
-    "typeRoots": ["node_modules/@types", "types"]
+    "typeRoots": ["node_modules/@types", "types"],
+    "types": ["vitest/globals"]
   },
   "rootDir": "./",
   "exclude": ["node_modules","dist"],
