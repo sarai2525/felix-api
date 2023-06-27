@@ -21,9 +21,9 @@
     "preserveSymlinks": true,
     "forceConsistentCasingInFileNames": true,
     "strictFunctionTypes": true,
-    "skipLibCheck": true
+    "typeRoots": ["node_modules/@types", "types"]
   },
   "rootDir": "./",
   "exclude": ["node_modules","dist"],
-  "include": ["src/**/*", "test/**/*"]
+  "include": ["src/**/*", "test/**/*", "build/**/*"],
 }
