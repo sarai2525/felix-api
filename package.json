@@ -29,6 +29,7 @@
     "@types/express-serve-static-core": "^4.17.35",
     "@types/node": "^20.3.1",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@vitest/ui": "^0.32.2",
     "better-typescript-lib": "^2.4.0",
     "dotenv": "^16.3.1",
     "esbuild": "^0.18.10",
