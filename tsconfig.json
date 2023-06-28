@@ -21,7 +21,7 @@
     "forceConsistentCasingInFileNames": true,
     "strictFunctionTypes": true,
     "typeRoots": ["node_modules/@types", "types"],
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "vitest/importMeta"]
   },
   "rootDir": "./",
   "exclude": ["node_modules","dist"],
