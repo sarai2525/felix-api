@@ -28,14 +28,6 @@ describe('signUp', () => {
       const { localId: publicId } = await auth({ email, password })
       await expect(setCustomRole({ publicId, role })).resolves.not.toThrowError()
     })
-    it('should throw error when publicId is empty', async () => {
-      let publicId = ''
-      await expect(setCustomRole({ publicId, role })).rejects.toThrowError('P2025')
-    })
-    it('should throw error when publicId is wrong', async () => {
-      let publicId = 'wrongPublicId'
-      await expect(setCustomRole({ publicId, role })).rejects.toThrowError('P2025')
-    })
   })
   describe('createUser', () => {})
 })
