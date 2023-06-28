@@ -92,7 +92,7 @@ class FirebaseAuthClient {
         }
       }).json()
     const response = (await signIn()) as Promise<SignInUser>
-    return await response
+    return response
   }
 
   public async postSignUp({ email, password }: Record<string, string>): Promise<SignUpUser> {
@@ -106,7 +106,7 @@ class FirebaseAuthClient {
         }
       }).json()
     const response = (await signUp()) as Promise<SignUpUser>
-    return await response
+    return response
   }
 
   public async sendConfirmationEmail({ idToken }): Promise<string> {
@@ -119,7 +119,7 @@ class FirebaseAuthClient {
         }
       }).json()
     const response = (await sendConfirmation()) as Promise<string>
-    return await response
+    return response
   }
 }
 
