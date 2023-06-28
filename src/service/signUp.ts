@@ -3,6 +3,7 @@ import { getAuth } from 'firebase-admin/auth'
 import { USER_ROLE } from '../constants/user.js'
 import { firebaseAdmin } from '../lib/firebaseAdmin.js'
 import { firebaseAuthClient, type SignUpUser } from '../lib/firebaseAuthClient.js'
+import { logger } from '../lib/logger.js'
 const { PrismaClient } = pkg
 
 interface User {
@@ -53,7 +54,9 @@ export async function createUser({ publicId, emailAddress, role }): Promise<void
       }
     })
   } catch (error) {
-    await Promise.reject(new Error(error))
+    const { code, meta: cause } = error
+    logger.warn(`${cause.cause}`)
+    await Promise.reject(new Error(code))
   } finally {
     await prisma.$disconnect()
   }
