@@ -5,6 +5,7 @@ import utc from 'dayjs/plugin/utc.js'
 import { getAuth, type UserRecord } from 'firebase-admin/auth'
 import { firebaseAdmin } from '../lib/firebaseAdmin.js'
 import { firebaseAuthClient, type SignInUser } from '../lib/firebaseAuthClient.js'
+import { logger } from '../lib/logger.js'
 const { PrismaClient } = pkg
 
 dayjs.extend(utc)
@@ -54,7 +55,9 @@ export async function updateLastLogin(publicId: string): Promise<void> {
       }
     })
   } catch (error) {
-    await Promise.reject(new Error(error))
+    const { code, meta: cause } = error
+    logger.warn(`${cause.cause}`)
+    await Promise.reject(new Error(code))
   } finally {
     await prisma.$disconnect()
   }
