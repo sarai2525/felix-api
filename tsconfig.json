@@ -18,7 +18,6 @@
     "baseUrl": "./",
     "strictNullChecks": true,
     "isolatedModules": true,
-    "preserveSymlinks": true,
     "forceConsistentCasingInFileNames": true,
     "strictFunctionTypes": true,
     "typeRoots": ["node_modules/@types", "types"],
