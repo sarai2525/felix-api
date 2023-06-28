@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { USER_ROLE } from '../../src/constants/user.js'
-import { auth, setCustomRole } from '../../src/service/signUp.js'
+import { auth, createUser, setCustomRole } from '../../src/service/signUp.js'
 
 describe('signUp', () => {
   let email = 'test.user@newell-productions.com'
@@ -29,5 +29,12 @@ describe('signUp', () => {
       await expect(setCustomRole({ publicId, role })).resolves.not.toThrowError()
     })
   })
-  describe('createUser', () => {})
+  describe('createUser', () => {
+    it('should create user', async () => {
+      let email = `test.user${Math.random()}@newell-productions.com`
+      const { localId: publicId } = await auth({ email, password })
+      await expect(setCustomRole({ publicId, role })).resolves.not.toThrowError()
+      await expect(createUser({ publicId, emailAddress: email, role })).resolves.not.toThrowError()
+    })
+  })
 })
