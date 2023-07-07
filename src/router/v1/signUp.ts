@@ -2,8 +2,9 @@ import dayjs from 'dayjs'
 import timezone from 'dayjs/plugin/timezone.js'
 import utc from 'dayjs/plugin/utc.js'
 import { type NextFunction, type Request, type Response } from 'express'
-import { logger } from '../lib/logger.js'
-import signUp from '../service/signUp.js'
+import { logger } from '../../lib/logger.js'
+import { slackWebhookSend } from '../../lib/slackNotification.js'
+import signUp from '../../service/signUp.js'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -17,6 +18,7 @@ export default [
       logger.info(`User ${data.publicId} has been created at ${jst}(JST)`)
       response.status(201).json(data)
     } catch (error) {
+      await slackWebhookSend(`${error}`)
       next(error)
     }
   }

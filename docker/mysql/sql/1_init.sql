@@ -1,1 +1,1 @@
-GRANT CREATE, ALTER, DROP, REFERENCES ON *.* to 'docker'@'%';
+GRANT CREATE, ALTER, DROP, REFERENCES ON *.* to 'felixHall'@'%';

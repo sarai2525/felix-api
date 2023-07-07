@@ -7,6 +7,9 @@ dependencies:
   '@prisma/client':
     specifier: 4.16.1
     version: 4.16.1(prisma@4.16.1)
+  '@slack/webhook':
+    specifier: ^6.1.0
+    version: 6.1.0
   cookie-parser:
     specifier: ^1.4.6
     version: 1.4.6
@@ -48,12 +51,18 @@ devDependencies:
   '@types/express':
     specifier: ^4.17.17
     version: 4.17.17
+  '@types/express-serve-static-core':
+    specifier: ^4.17.35
+    version: 4.17.35
   '@types/node':
     specifier: ^20.3.1
     version: 20.3.1
   '@typescript-eslint/eslint-plugin':
     specifier: ^5.50.0
     version: 5.60.0(@typescript-eslint/parser@5.60.0)(eslint@8.43.0)(typescript@5.1.3)
+  '@vitest/ui':
+    specifier: ^0.32.2
+    version: 0.32.2(vitest@0.32.2)
   better-typescript-lib:
     specifier: ^2.4.0
     version: 2.4.0(typescript@5.1.3)
@@ -96,12 +105,15 @@ devDependencies:
   tsx:
     specifier: ^3.12.7
     version: 3.12.7
+  type-fest:
+    specifier: ^3.12.0
+    version: 3.12.0
   typescript:
     specifier: ^5.1.3
     version: 5.1.3
   vitest:
     specifier: ^0.32.2
-    version: 0.32.2
+    version: 0.32.2(@vitest/ui@0.32.2)
 
 packages:
 
@@ -1032,6 +1044,10 @@ packages:
       - supports-color
     dev: false
 
+  /@polka/url@1.0.0-next.21:
+    resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
+    dev: true
+
   /@prisma/client@4.16.1(prisma@4.16.1):
     resolution: {integrity: sha512-CoDHu7Bt+NuDo40ijoeHP79EHtECsPBTy3yte5Yo3op8TqXt/kV0OT5OrsWewKvQGKFMHhYQ+ePed3zzjYdGAw==}
     engines: {node: '>=14.17'}
@@ -1131,6 +1147,22 @@ packages:
   /@sindresorhus/is@5.4.1:
     resolution: {integrity: sha512-axlrvsHlHlFmKKMEg4VyvMzFr93JWJj4eIfXY1STVuO2fsImCa7ncaiG5gC8HKOX590AW5RtRsC41/B+OfrSqw==}
     engines: {node: '>=14.16'}
+    dev: false
+
+  /@slack/types@1.10.0:
+    resolution: {integrity: sha512-tA7GG7Tj479vojfV3AoxbckalA48aK6giGjNtgH6ihpLwTyHE3fIgRrvt8TWfLwW8X8dyu7vgmAsGLRG7hWWOg==}
+    engines: {node: '>= 8.9.0', npm: '>= 5.5.1'}
+    dev: false
+
+  /@slack/webhook@6.1.0:
+    resolution: {integrity: sha512-7AYNISyAjn/lA/VDwZ307K5ft5DojXgBd3DRrGoFN8XxIwIyRALdFhxBiMgAqeJH8eWoktvNwLK24R9hREEqpA==}
+    engines: {node: '>= 12.13.0', npm: '>= 6.12.0'}
+    dependencies:
+      '@slack/types': 1.10.0
+      '@types/node': 20.3.1
+      axios: 0.21.4(debug@4.3.4)
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /@szmarczak/http-timer@5.0.1:
@@ -1462,6 +1494,21 @@ packages:
     resolution: {integrity: sha512-Q/ZNILJ4ca/VzQbRM8ur3Si5Sardsh1HofatG9wsJY1RfEaw0XKP8IVax2lI1qnrk9YPuG9LA2LkZ0EI/3d4ug==}
     dependencies:
       tinyspy: 2.1.1
+    dev: true
+
+  /@vitest/ui@0.32.2(vitest@0.32.2):
+    resolution: {integrity: sha512-N5JKftnB8qzKFtpQC5OcUGxYTLo6wiB/95Lgyk6MF52t74Y7BJOWbf6EFYhXqt9J0MSbhOR2kapq+WKKUGDW0g==}
+    peerDependencies:
+      vitest: '>=0.30.1 <1'
+    dependencies:
+      '@vitest/utils': 0.32.2
+      fast-glob: 3.2.12
+      fflate: 0.7.4
+      flatted: 3.2.7
+      pathe: 1.1.1
+      picocolors: 1.0.0
+      sirv: 2.0.3
+      vitest: 0.32.2(@vitest/ui@0.32.2)
     dev: true
 
   /@vitest/utils@0.32.2:
@@ -2876,6 +2923,10 @@ packages:
     resolution: {integrity: sha512-GDqVQezKzRABdeqflsgMr7ktzgF9CyS+p2oe0jJqUY6izSSbhPIQJDpoU4PtGcD7VPM9xh/dVrTu6z1nwgmEGw==}
     dev: false
 
+  /fflate@0.7.4:
+    resolution: {integrity: sha512-5u2V/CDW15QM1XbbgS+0DfPxVB+jUKhWEKuuFuHncbk3tEEqzmoXL+2KyOFuKGqOnmdIy0/davWF1CkuwtibCw==}
+    dev: true
+
   /file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
     engines: {node: ^10.12.0 || >=12.0.0}
@@ -4169,6 +4220,11 @@ packages:
     resolution: {integrity: sha512-ySViT69/76t8VhE1xXHK6Ch4NcDd26gx0MzKXLO+F7NOtnqH68d9zF94nT8ZWSxXh8ELOERsnJO/sWt1xZYw5A==}
     dev: false
 
+  /mrmime@1.0.1:
+    resolution: {integrity: sha512-hzzEagAgDyoU1Q6yg5uI+AorQgdvMCur3FcKf7NhMKWsaYg+RnbTyHRa/9IlLF9rf455MOCtcqqrQQ83pPP7Uw==}
+    engines: {node: '>=10'}
+    dev: true
+
   /ms@2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
     dev: false
@@ -5148,6 +5204,15 @@ packages:
     engines: {node: '>=14'}
     dev: false
 
+  /sirv@2.0.3:
+    resolution: {integrity: sha512-O9jm9BsID1P+0HOi81VpXPoDxYP374pkOLzACAoyUQ/3OUVndNpsz6wMnY2z+yOxzbllCKZrM+9QrWsv4THnyA==}
+    engines: {node: '>= 10'}
+    dependencies:
+      '@polka/url': 1.0.0-next.21
+      mrmime: 1.0.1
+      totalist: 3.0.1
+    dev: true
+
   /slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
@@ -5450,6 +5515,11 @@ packages:
     engines: {node: '>=0.6'}
     dev: false
 
+  /totalist@3.0.1:
+    resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
+    engines: {node: '>=6'}
+    dev: true
+
   /tr46@0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
     dev: false
@@ -5530,6 +5600,11 @@ packages:
   /type-fest@0.21.3:
     resolution: {integrity: sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==}
     engines: {node: '>=10'}
+    dev: true
+
+  /type-fest@3.12.0:
+    resolution: {integrity: sha512-qj9wWsnFvVEMUDbESiilKeXeHL7FwwiFcogfhfyjmvT968RXSvnl23f1JOClTHYItsi7o501C/7qVllscUP3oA==}
+    engines: {node: '>=14.16'}
     dev: true
 
   /type-is@1.6.18:
@@ -5673,7 +5748,7 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitest@0.32.2:
+  /vitest@0.32.2(@vitest/ui@0.32.2):
     resolution: {integrity: sha512-hU8GNNuQfwuQmqTLfiKcqEhZY72Zxb7nnN07koCUNmntNxbKQnVbeIS6sqUgR3eXSlbOpit8+/gr1KpqoMgWCQ==}
     engines: {node: '>=v14.18.0'}
     hasBin: true
@@ -5711,6 +5786,7 @@ packages:
       '@vitest/runner': 0.32.2
       '@vitest/snapshot': 0.32.2
       '@vitest/spy': 0.32.2
+      '@vitest/ui': 0.32.2(vitest@0.32.2)
       '@vitest/utils': 0.32.2
       acorn: 8.9.0
       acorn-walk: 8.2.0

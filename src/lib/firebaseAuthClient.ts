@@ -68,7 +68,7 @@ class FirebaseAuthClient {
         afterResponse: [
           async (response: Response): Promise<Response> => {
             const { body, requestUrl, method } = response
-            if (response.ok === false) {
+            if (!response.ok) {
               await clientErrorHandle({ body, requestUrl, method, response })
             }
             if (process.env.LOG_LEVEL === 'debug') {
@@ -82,41 +82,43 @@ class FirebaseAuthClient {
   }
 
   public async postSignIn({ email, password }: Record<string, string>): Promise<SignInUser> {
-    // Fix this to return SignInUser type
-    const response = (async () =>
-      this.client(`accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
+    const signIn = async (): Promise<unknown> =>
+      await this.client(`accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
         method: 'POST',
         json: {
           email,
           password,
           returnSecureToken: true
         }
-      }).json())()
-    return await response
+      }).json()
+    const response = (await signIn()) as Promise<SignInUser>
+    return response
   }
 
   public async postSignUp({ email, password }: Record<string, string>): Promise<SignUpUser> {
-    const response: SignUpUser = (async () =>
-      this.client(`accounts:signUp?key=${FIREBASE_API_KEY}`, {
+    const signUp = async (): Promise<unknown> =>
+      await this.client(`accounts:signUp?key=${FIREBASE_API_KEY}`, {
         method: 'POST',
         json: {
           email,
           password,
           returnSecureToken: true
         }
-      }).json())()
+      }).json()
+    const response = (await signUp()) as Promise<SignUpUser>
     return response
   }
 
   public async sendConfirmationEmail({ idToken }): Promise<string> {
-    const response: string = (async () =>
-      this.client(`accounts:sendOobCode?key=${FIREBASE_API_KEY}`, {
+    const sendConfirmation = async (): Promise<unknown> =>
+      await this.client(`accounts:sendOobCode?key=${FIREBASE_API_KEY}`, {
         method: 'POST',
         json: {
           requestType: 'VERIFY_EMAIL',
           idToken
         }
-      }).json())()
+      }).json()
+    const response = (await sendConfirmation()) as Promise<string>
     return response
   }
 }

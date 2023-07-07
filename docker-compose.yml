@@ -22,10 +22,10 @@ services:
       - 3306:3306
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
-      MYSQL_ROOT_PASSWORD: 'root'
-      MYSQL_USER: 'docker'
-      MYSQL_PASSWORD: 'docker'
-      MYSQL_DATABASE: 'felix'
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
       TZ: 'Asia/Tokyo'
     volumes:
       - db-store:/var/lib/mysql
