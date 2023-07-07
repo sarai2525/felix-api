@@ -26,12 +26,6 @@ interface UpdateEmail {
 }
 
 export default async function updateEmail({ oldEmail, password, newEmail }: UpdateEmail): Promise<User> {
-  const userRecord = await firebaseAuthClient.getUserByEmail(oldEmail)
-
-  if (userRecord === undefined || userRecord === null) {
-    throw new Error('EMAIL_NOT_FOUND')
-  }
-
   const {
     localId: publicId,
     displayName,

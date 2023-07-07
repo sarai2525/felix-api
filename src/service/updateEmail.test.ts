@@ -2,9 +2,9 @@ import { test } from 'vitest'
 import updateEmail from './updateEmail.js'
 
 test('updateEmail', async ({ expect }) => {
-  const oldEmail = 'xyz@gmail.com' // Change this to your test user's email
-  const newEmail = 'xyz123@gmail.com' // Change this to the new email you want to test
-  const password = 'Vampires13' // Change this to your test user's password
+  const oldEmail = 'yoyo@gmail.com' // Change this to your test user's email
+  const newEmail = 'yoyo13@gmail.com' // Change this to the new email you want to test
+  const password = 'Vampires13&' // Change this to your test user's password
 
   test('should return user information', async () => {
     const user = await updateEmail({ oldEmail, newEmail, password })
