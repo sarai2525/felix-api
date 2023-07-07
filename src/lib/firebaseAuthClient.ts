@@ -25,7 +25,26 @@ export interface SignUpUser {
   localId: string
 }
 
-async function clientErrorHandle({ body, requestUrl, method }): Promise<never> {
+export interface UpdateEmailResponse {
+  idToken: string
+  email: string
+  refreshToken: string
+  expiresIn: string
+  localId: string
+}
+
+export interface UpdatePasswordResponse {
+  idToken: string
+  refreshToken: string
+  expiresIn: string
+  localId: string
+}
+
+export interface SuccessResponse {
+  message: string
+}
+
+async function clientErrorHandle({ body, requestUrl, method }: Response): Promise<never> {
   const { error } = JSON.parse(body as string)
   const message = {
     event: 'Failed to request to Firebase Auth',
@@ -37,10 +56,10 @@ async function clientErrorHandle({ body, requestUrl, method }): Promise<never> {
     statusMessage: error.message
   }
   logger.warn(message)
-  return await Promise.reject(new Error(error.message))
+  throw new Error(error.message)
 }
 
-function clientSucceedDebugging({ response, requestUrl, method }): void {
+function clientSucceedDebugging({ response, requestUrl, method }: Response): void {
   const message = {
     event: `Succeed to request to Firebase Auth`,
     request: {
@@ -92,7 +111,7 @@ class FirebaseAuthClient {
         }
       }).json()
     const response = (await signIn()) as Promise<SignInUser>
-    return response
+    return await response
   }
 
   public async postSignUp({ email, password }: Record<string, string>): Promise<SignUpUser> {
@@ -106,7 +125,7 @@ class FirebaseAuthClient {
         }
       }).json()
     const response = (await signUp()) as Promise<SignUpUser>
-    return response
+    return await response
   }
 
   public async sendConfirmationEmail({ idToken }): Promise<string> {
@@ -119,7 +138,75 @@ class FirebaseAuthClient {
         }
       }).json()
     const response = (await sendConfirmation()) as Promise<string>
-    return response
+
+    return await response
+  }
+
+  public async updateEmail({ idToken, newEmail, password }: Record<string, string>): Promise<SignInUser> {
+    const currentUser: SignInUser = await this.postSignIn({ email: newEmail, password })
+
+    if (currentUser.idToken !== undefined && currentUser.idToken !== null && currentUser.idToken.trim() !== '') {
+      await this.client(`accounts:update?key=${FIREBASE_API_KEY}`, {
+        method: 'POST',
+        json: {
+          idToken,
+          email: newEmail,
+          returnSecureToken: true
+        }
+      }).json()
+
+      const updatedUser: SignInUser = await this.postSignIn({ email: newEmail, password })
+
+      return updatedUser
+    } else {
+      throw new Error('Invalid password')
+    }
+  }
+
+  public async updatePassword({ idToken, newPassword, email }: Record<string, string>): Promise<SignInUser> {
+    await this.client(`accounts:setAccountInfo?key=${FIREBASE_API_KEY}`, {
+      method: 'POST',
+      json: {
+        idToken,
+        password: newPassword,
+        returnSecureToken: true
+      }
+    }).json()
+
+    const user: SignInUser = await this.postSignIn({ email, password: newPassword })
+
+    return user
+  }
+
+  public async deleteAccount({ idToken }: Record<string, string>): Promise<SuccessResponse> {
+    const response: any = await this.client(`accounts:delete?key=${FIREBASE_API_KEY}`, {
+      method: 'POST',
+      json: {
+        idToken
+      }
+    }).json()
+
+    if (
+      response === undefined ||
+      typeof response !== 'object' ||
+      !('kind' in response) ||
+      response.kind !== 'identitytoolkit#DeleteAccountResponse'
+    ) {
+      throw new Error('Failed to delete account')
+    }
+
+    return { message: 'Account deleted successfully' }
+  }
+
+  public async postDeleteAccount({ email, password }: Record<string, string>): Promise<SuccessResponse> {
+    const user = await this.postSignIn({ email, password })
+    if (user === undefined || typeof user !== 'object' || !('idToken' in user)) {
+      throw new Error('Invalid email or password')
+    }
+
+    const deleteResponse = await this.deleteAccount({ idToken: user.idToken })
+
+    return deleteResponse
   }
 }
 
